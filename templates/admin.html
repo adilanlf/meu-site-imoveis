@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Administração de Imóveis</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <h2>Adicionar Imóvel</h2>
+    <form method="POST" action="{{ url_for('add_imovel') }}" enctype="multipart/form-data">
+        <label>Título:</label><br>
+        <input type="text" name="titulo" required><br>
+        <label>Descrição:</label><br>
+        <textarea name="descricao" required></textarea><br>
+        <label>Preço:</label><br>
+        <input type="text" name="preco" required><br>
+        <label>Fotos:</label><br>
+        <input type="file" name="fotos" multiple required><br><br>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h2>Imóveis Cadastrados</h2>
+    <ul>
+        {% for imovel in imoveis %}
+        <li>
+            {{ imovel['titulo'] }} - {{ imovel['preco'] }}
+            <a href="{{ url_for('delete_imovel', id=imovel['id']) }}">[Excluir]</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

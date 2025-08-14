@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Imóveis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Lista de Imóveis</h1>
+    <div class="grid">
+        {% for imovel in imoveis %}
+        <div class="card">
+            <a href="{{ url_for('detalhes', id=imovel['id']) }}">
+                <img src="{{ url_for('static', filename='uploads/' + imovel['fotos'].split(',')[0]) }}" alt="{{ imovel['titulo'] }}">
+                <h2>{{ imovel['titulo'] }}</h2>
+            </a>
+            <p>{{ imovel['preco'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
