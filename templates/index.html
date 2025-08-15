@@ -6,15 +6,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Lista de Imóveis</h1>
-    <div class="grid">
+    <header>
+        <h1>Lista de Imóveis</h1>
+    </header>
+
+    <div class="imoveis-lista">
         {% for imovel in imoveis %}
-        <div class="card">
+        <div class="imovel-card">
             <a href="{{ url_for('detalhes', id=imovel['id']) }}">
                 <img src="{{ url_for('static', filename='uploads/' + imovel['fotos'].split(',')[0]) }}" alt="{{ imovel['titulo'] }}">
-                <h2>{{ imovel['titulo'] }}</h2>
             </a>
-            <p>{{ imovel['preco'] }}</p>
+            <div class="info">
+                <h2>{{ imovel['titulo'] }}</h2>
+                <p><strong>Localização:</strong> {{ imovel['localizacao'] if 'localizacao' in imovel.keys() else 'Não informada' }}</p>
+                <p><strong>Tamanho da área:</strong> {{ imovel['area'] if 'area' in imovel.keys() else 'Não informada' }} m²</p>
+                <p>{{ imovel['descricao'] }}</p>
+                <p class="preco"><strong>Preço:</strong> {{ imovel['preco'] }}</p>
+            </div>
         </div>
         {% endfor %}
     </div>
