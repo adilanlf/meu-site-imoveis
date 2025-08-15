@@ -14,8 +14,8 @@ login_manager.login_view = "login"
 DATABASE = "database.db"
 
 # Usuário Admin
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "senha123"  # Pode usar variáveis de ambiente no Render
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "senha123")
 
 # User class para Flask-Login
 class User(UserMixin):
