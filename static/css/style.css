@@ -75,3 +75,24 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.galeria img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+}
+
+.galeria img:hover {
+  transform: scale(1.05);
+}
