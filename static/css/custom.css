@@ -1,0 +1,77 @@
+/* Fundo geral do site */
+body {
+    background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Cards de imóveis */
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Botões */
+.btn-primary {
+    background-color: #0066cc;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #004c99;
+}
+
+/* Botões secundários */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+.btn-success:hover {
+    background-color: #1e7e34;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5 {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+}
+
+/* Formulários */
+.form-control, .form-select {
+    border-radius: 8px;
+}
+
+/* Carrossel de imagens */
+.carousel-inner img {
+    border-radius: 12px;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+/* Tabela Admin */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+}
+.table thead {
+    background-color: #007bff;
+    color: white;
+}
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Alertas */
+.alert {
+    border-radius: 8px;
+    margin-top: 15px;
+}

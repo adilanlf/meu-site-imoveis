@@ -1,45 +1,25 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Imóveis</title>
-    <style>
-        .imoveis {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            background: #fafafa;
-            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-        }
-        .card-img {
-            width: 250px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Lista de Imóveis</h1>
-    <div class="imoveis">
-        {% for imovel in imoveis %}
-            <div class="card">
-                <img src="{{ url_for('static', filename='uploads/' ~ imovel['fotos'].split(',')[0]) }}"
-                     alt="{{ imovel['titulo'] }}"
-                     class="card-img">
-                <h2>{{ imovel['titulo'] }}</h2>
-                <p><strong>Localização:</strong> {{ imovel['localizacao'] if 'localizacao' in imovel.keys() else 'Não informada' }}</p>
-                <p><strong>Área:</strong> {{ imovel['area'] if 'area' in imovel.keys() else 'Não informada' }} m²</p>
-                <p><strong>Preço:</strong> R$ {{ imovel['preco'] if 'preco' in imovel.keys() else 'Sob consulta' }}</p>
-                <a href="{{ url_for('detalhes', id=imovel['id']) }}">Ver mais detalhes</a>
+{% extends "base.html" %}
+
+{% block title %}Imóveis Disponíveis{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Imóveis disponíveis</h1>
+<div class="row">
+    {% for imovel in imoveis %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename='uploads/' + imovel['fotos'].split(',')[0]) }}" 
+                     class="card-img-top" alt="Foto do imóvel">
+                <div class="card-body">
+                    <h5 class="card-title">{{ imovel['titulo'] }}</h5>
+                    <p class="card-text text-muted">{{ imovel['descricao'][:80] }}...</p>
+                    <p class="fw-bold text-success">{{ imovel['preco'] }}</p>
+                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary w-100">
+                        Ver Detalhes
+                    </a>
+                </div>
             </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
