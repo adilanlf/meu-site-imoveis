@@ -1,49 +1,61 @@
 {% extends "base.html" %}
+
+{% block title %}Detalhes do Imóvel{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>{{ imovel.titulo }}</h2>
-    <p>{{ imovel.descricao }}</p>
-    <h4 class="text-success">R${{ imovel.preco }}k</h4>
+<div class="container my-4">
 
-    {% if fotos %}
-    <div id="carouselFotos" class="carousel slide mt-4" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            {% for foto in fotos %}
-            <div class="carousel-item {% if loop.first %}active{% endif %}" style="text-align: center;">
-                <img src="{{ url_for('static', filename='uploads/' + foto) }}"
-                     class="d-block carousel-img mx-auto"
-                     alt="Foto do imóvel"
-                     onclick="openModal(this.src)">
+    <!-- Botão Voltar -->
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mb-3">⬅ Voltar para listagem</a>
+
+    <!-- Card principal -->
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="row g-0">
+            
+            <!-- Galeria de fotos -->
+            <div class="col-md-7">
+                <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for foto in fotos %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
+                                 class="d-block w-100" alt="Foto do imóvel">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImovel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImovel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
             </div>
-            {% endfor %}
+
+            <!-- Informações do imóvel -->
+            <div class="col-md-5 d-flex align-items-center">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold">{{ imovel['titulo'] }}</h2>
+                    <p class="text-muted">{{ imovel['descricao'] }}</p>
+                    <h4 class="fw-bold text-success mb-4">{{ imovel['preco'] }}</h4>
+
+                    <!-- Ações -->
+                    <div class="d-grid gap-2">
+                        <a href="https://wa.me/5513991985274?text=Olá, tenho interesse no imóvel {{ imovel['titulo'] }}" 
+                           target="_blank" 
+                           class="btn btn-success btn-lg">
+                            📞 Contatar via WhatsApp
+                        </a>
+                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}" 
+                           class="btn btn-outline-primary btn-lg">
+                            ✉ Enviar E-mail
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
     </div>
-    {% else %}
-        <p class="text-muted mt-3">Nenhuma foto disponível.</p>
-    {% endif %}
-</div>
 
-<!-- Modal para zoom -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <img id="modalImage" src="" class="img-fluid rounded">
-    </div>
-  </div>
 </div>
-
-<script>
-function openModal(src) {
-    document.getElementById("modalImage").src = src;
-    var modal = new bootstrap.Modal(document.getElementById('imageModal'));
-    modal.show();
-}
-</script>
 {% endblock %}

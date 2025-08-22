@@ -1,61 +1,70 @@
 {% extends "base.html" %}
 
-{% block title %}Administração{% endblock %}
+{% block title %}Painel Administrativo{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Painel Administrativo</h2>
+<div class="container my-4">
 
-<!-- Formulário de novo imóvel -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <h5 class="card-title">Adicionar Novo Imóvel</h5>
-        <form action="{{ url_for('add_imovel') }}" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="titulo" class="form-label">Título</label>
-                <input type="text" name="titulo" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição</label>
-                <textarea name="descricao" class="form-control" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="preco" class="form-label">Preço</label>
-                <input type="text" name="preco" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="fotos" class="form-label">Fotos</label>
-                <input type="file" name="fotos" class="form-control" multiple>
-            </div>
-            <button type="submit" class="btn btn-success">Adicionar</button>
-        </form>
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📊 Painel Administrativo</h2>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+            Sair
+        </a>
     </div>
-</div>
 
-<!-- Lista de imóveis -->
-<table class="table table-striped table-hover shadow-sm">
-    <thead class="table-primary">
-        <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Preço</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
+    <!-- Card de adicionar imóvel -->
+    <div class="card shadow-sm border-0 mb-4 rounded-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">➕ Adicionar Novo Imóvel</h5>
+            <form action="{{ url_for('add_imovel') }}" method="POST" enctype="multipart/form-data" class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="titulo" placeholder="Título do Imóvel" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="preco" placeholder="Preço (ex: R$250.000)" required>
+                </div>
+                <div class="col-12">
+                    <textarea class="form-control" name="descricao" placeholder="Descrição do imóvel" rows="3" required></textarea>
+                </div>
+                <div class="col-12">
+                    <input type="file" class="form-control" name="fotos" multiple required>
+                    <small class="text-muted">Você pode enviar várias fotos de uma vez.</small>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-success px-4">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de imóveis -->
+    <h4 class="fw-bold mb-3">📋 Imóveis Cadastrados</h4>
+    <div class="row">
         {% for imovel in imoveis %}
-        <tr>
-            <td>{{ imovel['id'] }}</td>
-            <td>{{ imovel['titulo'] }}</td>
-            <td>{{ imovel['preco'] }}</td>
-            <td>
-                <a href="{{ url_for('delete_imovel', id=imovel['id']) }}" 
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Tem certeza que deseja excluir este imóvel?')">
-                   Excluir
-                </a>
-            </td>
-        </tr>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 rounded-4">
+                <img src="{{ url_for('static', filename='uploads/' + imovel['fotos'].split(',')[0]) }}" 
+                     class="card-img-top rounded-top-4" alt="Foto do imóvel">
+                <div class="card-body">
+                    <h5 class="card-title">{{ imovel['titulo'] }}</h5>
+                    <p class="text-muted small">{{ imovel['descricao'][:80] }}...</p>
+                    <p class="fw-bold text-success">{{ imovel['preco'] }}</p>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-between">
+                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-sm btn-primary">
+                        Ver Detalhes
+                    </a>
+                    <a href="{{ url_for('delete_imovel', id=imovel['id']) }}" 
+                       class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('Deseja realmente excluir este imóvel?')">
+                        Excluir
+                    </a>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </tbody>
-</table>
+    </div>
+
+</div>
 {% endblock %}
