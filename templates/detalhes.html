@@ -15,20 +15,41 @@
             <!-- Galeria de fotos -->
             <div class="col-md-7">
                 <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
+                    
+                    <!-- Fotos principais -->
                     <div class="carousel-inner">
                         {% for foto in fotos %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
                             <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
-                                 class="d-block w-100" alt="Foto do imóvel">
+                                 class="d-block w-100" 
+                                 style="max-height: 500px; object-fit: contain;" 
+                                 alt="Foto do imóvel">
                         </div>
                         {% endfor %}
                     </div>
+
+                    <!-- Setas -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselImovel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
+                        <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Anterior</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselImovel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
+                        <span class="carousel-control-next-icon" style="filter: invert(1);"></span>
+                        <span class="visually-hidden">Próximo</span>
                     </button>
+
+                    <!-- Miniaturas com scroll horizontal -->
+                    <div class="mt-2 overflow-auto d-flex gap-2 py-2" style="white-space: nowrap;">
+                        {% for foto in fotos %}
+                        <div style="flex: 0 0 auto; width: 80px; height: 60px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
+                                 style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                 onclick="document.querySelector('#carouselImovel .carousel-item.active').classList.remove('active'); 
+                                          document.querySelectorAll('#carouselImovel .carousel-item')[{{ loop.index0 }}].classList.add('active');">
+                        </div>
+                        {% endfor %}
+                    </div>
+
                 </div>
             </div>
 
