@@ -1,42 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}Imóveis Disponíveis{% endblock %}
+{% block title %}Lista de Imóveis{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <h1 class="text-center mb-5 fw-bold">🏡 Imóveis Disponíveis</h1>
+<div class="container my-4">
+    <h2 class="mb-4">Imóveis Disponíveis</h2>
 
-    <div class="row g-4">
+    <div class="row">
         {% for imovel in imoveis %}
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 h-100 rounded-4 overflow-hidden">
-                    
-                    <!-- Foto principal -->
-                    <div class="position-relative">
-                        <img src="{{ url_for('static', filename='uploads/' + imovel['fotos'].split(',')[0]) }}" 
-                             class="card-img-top" 
-                             alt="Foto do imóvel"
-                             style="height: 220px; object-fit: cover;">
-                        <span class="badge bg-success position-absolute top-0 start-0 m-2 fs-6">
-                            {{ imovel['preco'] }}
-                        </span>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0">
+                {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
+                {% if fotos %}
+                    <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
+                         class="card-img-top" 
+                         style="height:220px; object-fit:cover;"
+                         alt="Foto do imóvel">
+                {% else %}
+                    <img src="{{ url_for('static', filename='no-image.jpg') }}" 
+                         class="card-img-top"
+                         style="height:220px; object-fit:cover;"
+                         alt="Sem foto">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ imovel['titulo'] }}</h5>
+                    <p class="text-success fw-bold">{{ imovel['preco'] }}</p>
+
+                    <div class="d-flex flex-wrap small text-muted mb-2">
+                        <span class="me-3">🛏 {{ imovel['dormitorios'] }} dorms</span>
+                        <span class="me-3">🛁 {{ imovel['banheiros'] }} banhs</span>
+                        <span class="me-3">🚗 {{ imovel['vagas'] }} vagas</span>
+                        <span class="me-3">📐 {{ imovel['area'] }} m²</span>
                     </div>
 
-                    <!-- Corpo do card -->
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">{{ imovel['titulo'] }}</h5>
-                        <p class="card-text text-muted mb-3">{{ imovel['descricao'][:100] }}...</p>
-                        <div class="mt-auto">
-                            <a href="{{ url_for('detalhes', id=imovel['id']) }}" 
-                               class="btn btn-primary w-100 rounded-pill fw-semibold">
-                               Ver Detalhes
-                            </a>
-                        </div>
-                    </div>
+                    {% if imovel['destaque'] %}
+                        <span class="badge bg-warning text-dark mb-2">⭐ Destaque</span>
+                    {% endif %}
 
+                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm">
+                        Ver detalhes
+                    </a>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
+
+

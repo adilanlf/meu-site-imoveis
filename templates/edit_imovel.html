@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Imóvel{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Editar Imóvel</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input type="text" name="titulo" class="form-control" value="{{ imovel['titulo'] }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea name="descricao" class="form-control" required>{{ imovel['descricao'] }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Preço</label>
+                <input type="text" name="preco" class="form-control" value="{{ imovel['preco'] }}" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Dormitórios</label>
+                    <input type="number" name="dormitorios" class="form-control" value="{{ imovel['dormitorios'] }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Banheiros</label>
+                    <input type="number" name="banheiros" class="form-control" value="{{ imovel['banheiros'] }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Vagas</label>
+                    <input type="number" name="vagas" class="form-control" value="{{ imovel['vagas'] }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Área (m²)</label>
+                    <input type="text" name="area" class="form-control" value="{{ imovel['area'] }}">
+                </div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="destaque" value="1" {% if imovel['destaque'] %}checked{% endif %}>
+                <label class="form-check-label">Imóvel em Destaque</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Adicionar novas fotos</label>
+                <input type="file" name="fotos" class="form-control" multiple>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fotos atuais</label>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for foto in imovel['fotos'].split(',') %}
+                        <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
+                             class="rounded border" style="width:120px; height:90px; object-fit:cover;">
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="{{ url_for('admin') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
