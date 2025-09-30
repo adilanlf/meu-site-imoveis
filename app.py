@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 import sqlite3
 import os
+from datetime import datetime  # ✅ Import adicionado
 
 # Configurações
 app = Flask(__name__)
@@ -32,13 +33,17 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Rota Home
+# Rota Home (atualizada para current_year)
 @app.route("/")
 def index():
     conn = get_db_connection()
     imoveis = conn.execute("SELECT * FROM imoveis").fetchall()
     conn.close()
-    return render_template("index.html", imoveis=imoveis)
+    current_year = datetime.now().year  # ✅ Ano atual
+    return render_template("index.html", imoveis=imoveis, current_year=current_year)
+
+# ... resto do app.py continua normalmente
+
 
 # Rota Detalhes do Imóvel
 @app.route("/imovel/<int:id>")
