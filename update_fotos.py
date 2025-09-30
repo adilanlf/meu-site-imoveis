@@ -1,31 +1,66 @@
 import sqlite3
+import os
 
-# Caminho do banco de dados
-DATABASE = "database.db"
+UPLOADS_DIR = "static/uploads"
 
-def atualizar_fotos(id_imovel, lista_fotos):
-    """
-    Atualiza a lista de fotos de um imóvel específico no banco de dados.
-    """
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
+# Conecta ao banco
+conn = sqlite3.connect('database.db')
+c = conn.cursor()
 
-    fotos_str = ",".join(lista_fotos)  # Transforma lista em string separada por vírgula
+# Pede o ID do imóvel
+imovel_id = input("Digite o ID do imóvel que deseja atualizar as fotos: ")
 
-    c.execute("UPDATE imoveis SET fotos = ? WHERE id = ?", (fotos_str, id_imovel))
+# Busca o imóvel
+c.execute("SELECT fotos FROM imoveis WHERE id = ?", (imovel_id,))
+imovel = c.fetchone()
 
+if not imovel:
+    print("❌ Imóvel não encontrado!")
+else:
+    fotos = imovel[0].split(",") if imovel[0] else []
+
+    while True:
+        print("\nFotos atuais:")
+        for i, foto in enumerate(fotos, start=1):
+            print(f"{i}. {foto}")
+
+        print("\nO que deseja fazer?")
+        print("1 - Adicionar fotos")
+        print("2 - Remover fotos")
+        print("3 - Finalizar")
+        escolha = input("Escolha uma opção (1/2/3): ")
+
+        if escolha == "1":
+            novas_fotos = input("Digite os nomes das fotos a adicionar, separados por vírgula: ")
+            for f in [f.strip() for f in novas_fotos.split(",")]:
+                caminho_foto = os.path.join(UPLOADS_DIR, f)
+                if not os.path.isfile(caminho_foto):
+                    print(f"⚠ Foto {f} não encontrada na pasta {UPLOADS_DIR}, não será adicionada.")
+                elif f in fotos:
+                    print(f"⚠ Foto {f} já existe e não será duplicada.")
+                else:
+                    fotos.append(f)
+                    print(f"✅ Foto {f} adicionada.")
+        elif escolha == "2":
+            remover = input("Digite os números das fotos a remover, separados por vírgula: ")
+            try:
+                indices = sorted([int(x)-1 for x in remover.split(",")], reverse=True)
+                for idx in indices:
+                    if 0 <= idx < len(fotos):
+                        print(f"Removendo foto: {fotos[idx]}")
+                        fotos.pop(idx)
+                    else:
+                        print(f"⚠ Índice {idx+1} inválido!")
+            except ValueError:
+                print("⚠ Entrada inválida!")
+        elif escolha == "3":
+            break
+        else:
+            print("⚠ Opção inválida! Tente novamente.")
+
+    # Atualiza no banco
+    c.execute("UPDATE imoveis SET fotos = ? WHERE id = ?", (",".join(fotos), imovel_id))
     conn.commit()
-    conn.close()
-    print(f"✅ Fotos do imóvel {id_imovel} atualizadas com sucesso!")
+    print("\n✅ Fotos atualizadas com sucesso!")
 
-if __name__ == "__main__":
-    # Pergunta ID do imóvel
-    id_imovel = int(input("Digite o ID do imóvel que deseja atualizar: "))
-
-    # Pergunta nomes das fotos
-    fotos_input = input("Digite os nomes das fotos separados por vírgula (ex: casa2_1.jpg,casa2_2.jpg,...): ")
-
-    # Converte para lista
-    lista_fotos = [f.strip() for f in fotos_input.split(",") if f.strip()]
-
-    atualizar_fotos(id_imovel, lista_fotos)
+conn.close()

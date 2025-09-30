@@ -7,31 +7,47 @@ c = conn.cursor()
 # Pede o ID do imóvel
 imovel_id = input("Digite o ID do imóvel que deseja editar: ")
 
-# Busca o imóvel atual
-c.execute("SELECT * FROM imoveis WHERE id = ?", (imovel_id,))
+# Busca o imóvel
+c.execute("SELECT titulo, descricao, preco FROM imoveis WHERE id = ?", (imovel_id,))
 imovel = c.fetchone()
 
 if not imovel:
     print("❌ Imóvel não encontrado!")
 else:
-    print("\nImóvel atual:")
-    print(f"Título: {imovel[1]}")
-    print(f"Descrição: {imovel[2]}")
-    print(f"Preço: {imovel[3]}")
-    print(f"Fotos: {imovel[4]}")
+    titulo, descricao, preco = imovel
 
-    # Pede novos valores
-    novo_titulo = input("Novo título (enter para manter): ") or imovel[1]
-    nova_descricao = input("Nova descrição (enter para manter): ") or imovel[2]
-    novo_preco = input("Novo preço (enter para manter): ") or imovel[3]
+    while True:
+        print("\nInformações atuais do imóvel:")
+        print(f"1. Título: {titulo}")
+        print(f"2. Descrição: {descricao}")
+        print(f"3. Preço: {preco}")
+        print("4. Finalizar edição")
+        
+        opcao = input("Escolha o campo que deseja editar (1/2/3/4): ")
+
+        if opcao == "1":
+            novo_titulo = input("Digite o novo título (ou pressione Enter para manter): ")
+            if novo_titulo.strip():
+                titulo = novo_titulo.strip()
+                print(f"✅ Título atualizado para: {titulo}")
+        elif opcao == "2":
+            nova_descricao = input("Digite a nova descrição (ou pressione Enter para manter): ")
+            if nova_descricao.strip():
+                descricao = nova_descricao.strip()
+                print("✅ Descrição atualizada.")
+        elif opcao == "3":
+            novo_preco = input("Digite o novo preço (ou pressione Enter para manter): ")
+            if novo_preco.strip():
+                preco = novo_preco.strip()
+                print(f"✅ Preço atualizado para: {preco}")
+        elif opcao == "4":
+            break
+        else:
+            print("⚠ Opção inválida! Tente novamente.")
 
     # Atualiza no banco
-    c.execute("""
-        UPDATE imoveis
-        SET titulo = ?, descricao = ?, preco = ?
-        WHERE id = ?
-    """, (novo_titulo, nova_descricao, novo_preco, imovel_id))
-
+    c.execute("UPDATE imoveis SET titulo = ?, descricao = ?, preco = ? WHERE id = ?",
+              (titulo, descricao, preco, imovel_id))
     conn.commit()
     print("\n✅ Imóvel atualizado com sucesso!")
 
