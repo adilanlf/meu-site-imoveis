@@ -1,11 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Lista de Imóveis{% endblock %}
+{% block title %}Imóveis Disponíveis{% endblock %}
 
 {% block content %}
 <div class="container my-4">
-    <h2 class="mb-4">Imóveis Disponíveis</h2>
 
+    <!-- Seção Topo: Redes Sociais e Vídeo -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-3">Siga-me nas redes sociais</h2>
+            <div class="d-flex overflow-hidden" id="socialTicker" style="gap: 40px; scroll-behavior: smooth;">
+                <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/facebook.png') }}" style="width:80px;" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/negao_adilan?igsh=MTZxdmszMXQ2YmMycA==" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/instagram.png') }}" style="width:80px;" alt="Instagram">
+                </a>
+                <a href="https://wa.me/5513991985274" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/whatsapp.png') }}" style="width:80px;" alt="WhatsApp">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="mb-3">Sobre Mim</h2>
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/4ObJvQSEbmA?si=uhCRnXWSoJ1HXsbv" title="Sobre Mim" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Imóveis -->
+    <h2 class="mb-4">Imóveis Disponíveis</h2>
     <div class="row">
         {% for imovel in imoveis %}
         <div class="col-md-4 mb-4">
@@ -13,40 +39,47 @@
                 {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
                 {% if fotos %}
                     <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
-                         class="card-img-top" 
-                         style="height:220px; object-fit:cover;"
-                         alt="Foto do imóvel">
+                         class="card-img-top" style="height:220px; object-fit:cover;" alt="Foto do imóvel">
                 {% else %}
                     <img src="{{ url_for('static', filename='no-image.jpg') }}" 
-                         class="card-img-top"
-                         style="height:220px; object-fit:cover;"
-                         alt="Sem foto">
+                         class="card-img-top" style="height:220px; object-fit:cover;" alt="Sem foto">
                 {% endif %}
-
                 <div class="card-body">
                     <h5 class="card-title">{{ imovel['titulo'] }}</h5>
                     <p class="text-success fw-bold">{{ imovel['preco'] }}</p>
-
                     <div class="d-flex flex-wrap small text-muted mb-2">
                         <span class="me-3">🛏 {{ imovel['dormitorios'] }} dorms</span>
                         <span class="me-3">🛁 {{ imovel['banheiros'] }} banhs</span>
                         <span class="me-3">🚗 {{ imovel['vagas'] }} vagas</span>
                         <span class="me-3">📐 {{ imovel['area'] }} m²</span>
                     </div>
-
                     {% if imovel['destaque'] %}
                         <span class="badge bg-warning text-dark mb-2">⭐ Destaque</span>
                     {% endif %}
-
-                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm">
-                        Ver detalhes
-                    </a>
+                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm w-100">Ver detalhes</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Script para mover o ticker de redes sociais -->
+<script>
+const ticker = document.getElementById('socialTicker');
+let scrollPos = 0;
+
+function moveTicker() {
+    scrollPos += 1;
+    if(scrollPos >= ticker.scrollWidth / 2) scrollPos = 0;
+    ticker.scrollTo({ left: scrollPos, behavior: 'smooth' });
+    requestAnimationFrame(moveTicker);
+}
+
+if(ticker) moveTicker();
+</script>
 {% endblock %}
+
+
 
 
