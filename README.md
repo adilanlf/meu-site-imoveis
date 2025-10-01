@@ -7,3 +7,4 @@ tambem fiz o update imovel para alterar descriçao e valor, mesmo jeito do fotos
 python update_imovel.py
 
 criei add_imovel.py para adicionar mais imoveis caso precise (python add_imovel.py)
+UNIFIQUEI TODOS OS SCRIPTS DO IMOVEL E FOTO PARA UM UNICO GERENCIADOR. python gerenciador_imoveis_avancado.py
