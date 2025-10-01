@@ -6,3 +6,4 @@ pra todar o update fotos eh python update_fotos.py
 tambem fiz o update imovel para alterar descriçao e valor, mesmo jeito do fotos se eu quise alterar pelo terminal
 python update_imovel.py
 
+criei add_imovel.py para adicionar mais imoveis caso precise (python add_imovel.py)
