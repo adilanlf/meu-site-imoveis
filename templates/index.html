@@ -13,18 +13,25 @@
     </div>
 
     <!-- Filtros -->
-    <div class="mb-4 d-flex flex-wrap align-items-center gap-3">
-        <form method="get" class="d-flex gap-2 flex-wrap">
-            <select name="sort" class="form-select">
-                <option value="">Ordenar por</option>
-                <option value="preco_desc" {% if request.args.get('sort') == 'preco_desc' %}selected{% endif %}>Preço: Maior</option>
-                <option value="preco_asc" {% if request.args.get('sort') == 'preco_asc' %}selected{% endif %}>Preço: Menor</option>
-                <option value="praia_asc" {% if request.args.get('sort') == 'praia_asc' %}selected{% endif %}>Mais próximo da praia</option>
-                <option value="praia_desc" {% if request.args.get('sort') == 'praia_desc' %}selected{% endif %}>Mais longe da praia</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Aplicar</button>
-        </form>
-    </div>
+    <form method="get" class="d-flex flex-wrap gap-2 mb-4">
+        <select name="sort" class="form-select">
+            <option value="">Ordenar por</option>
+            <option value="preco_desc" {% if request.args.get('sort') == 'preco_desc' %}selected{% endif %}>Preço: Maior</option>
+            <option value="preco_asc" {% if request.args.get('sort') == 'preco_asc' %}selected{% endif %}>Preço: Menor</option>
+            <option value="praia_asc" {% if request.args.get('sort') == 'praia_asc' %}selected{% endif %}>Mais próximo da praia</option>
+            <option value="praia_desc" {% if request.args.get('sort') == 'praia_desc' %}selected{% endif %}>Mais longe da praia</option>
+        </select>
+
+        <!-- Filtro extra (ex: dormitórios) -->
+        <select name="dormitorios" class="form-select">
+            <option value="">Dormitórios</option>
+            <option value="1" {% if request.args.get('dormitorios') == '1' %}selected{% endif %}>1+</option>
+            <option value="2" {% if request.args.get('dormitorios') == '2' %}selected{% endif %}>2+</option>
+            <option value="3" {% if request.args.get('dormitorios') == '3' %}selected{% endif %}>3+</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Aplicar</button>
+    </form>
 
     <!-- Imóveis -->
     <div class="row g-4">
@@ -41,13 +48,13 @@
                     <h5 class="card-title">{{ imovel['titulo'] }}</h5>
                     <p class="text-success fw-bold fs-5 price-hover">{{ imovel['preco'] }}</p>
                     <div class="d-flex flex-wrap mb-3 small text-muted">
-                        <span class="me-3" title="Dormitórios">🛏 {{ imovel['dormitorios'] }}</span>
-                        <span class="me-3" title="Banheiros">🛁 {{ imovel['banheiros'] }}</span>
-                        <span class="me-3" title="Vagas">🚗 {{ imovel['vagas'] }}</span>
-                        <span class="me-3" title="Área">📐 {{ imovel['area'] }} m²</span>
+                        <span class="me-3">🛏 {{ imovel['dormitorios'] }}</span>
+                        <span class="me-3">🛁 {{ imovel['banheiros'] }}</span>
+                        <span class="me-3">🚗 {{ imovel['vagas'] }}</span>
+                        <span class="me-3">📐 {{ imovel['area'] }} m²</span>
                     </div>
                     {% if imovel['destaque'] %}
-                        <span class="badge bg-warning text-dark mb-2 badge-highlight">⭐ Destaque</span>
+                        <span class="badge bg-warning text-dark mb-2">⭐ Destaque</span>
                     {% endif %}
                     <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm mt-auto w-100">Ver detalhes</a>
                 </div>
@@ -57,4 +64,5 @@
     </div>
 </div>
 {% endblock %}
+
 
