@@ -14,7 +14,7 @@
 
     <!-- Topo: Redes Sociais + Vídeo -->
     <div class="row mb-5 align-items-center">
-        <div class="col-md-7 mb-3 mb-md-0">
+        <div class="col-md-7 mb-3 mb-md-0 animate-fade delay-1">
             <h2 class="mb-3">Redes Sociais</h2>
             <div class="d-flex overflow-hidden" id="socialTicker" style="gap: 25px;">
                 <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
@@ -29,13 +29,10 @@
             </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-5 animate-fade delay-2">
             <h2 class="mb-3">Um pouco de Mongaguá</h2>
-            <div class="video-card shadow-lg">
-                <div class="ratio ratio-16x9">
-                    <iframe src="https://www.youtube.com/embed/sP1Y_4Qm7F0?si=VQymXvum53r8EBJq" 
-                            title="Sobre Mim" allowfullscreen></iframe>
-                </div>
+            <div class="ratio ratio-16x9 video-card shadow-lg">
+                <iframe src="https://www.youtube.com/embed/sP1Y_4Qm7F0?si=VQymXvum53r8EBJq" title="Sobre Mim" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -44,8 +41,8 @@
     <h2 class="mb-4">Imóveis Disponíveis</h2>
     <div class="row g-4">
         {% for imovel in imoveis %}
-        <div class="col-md-4 col-sm-6">
-            <div class="card card-hover shadow-lg h-100 border-0 position-relative">
+        <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
+            <div class="card card-hover shadow-lg h-100 border-0">
                 {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
                 {% if fotos %}
                     <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
@@ -108,6 +105,7 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
 
 

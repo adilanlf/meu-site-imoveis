@@ -18,8 +18,8 @@ body {
     border-radius: 1rem;
     padding: 3rem 2rem;
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    transition: all 0.5s ease-in-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
 }
 
 .welcome-banner h1 {
@@ -33,41 +33,44 @@ body {
     margin-top: 1rem;
 }
 
-/* Banner animation */
-.animate-fade {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s forwards;
-}
-
+/* ===========================
+   ANIMAÇÕES
+=========================== */
 @keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Pulse botão */
-.pulse-btn {
-    animation: pulse 2s infinite;
+.animate-fade {
+    animation: fadeInUp 0.8s ease forwards;
 }
 
+.animate-fade.delay-1 { animation-delay: 0.2s; }
+.animate-fade.delay-2 { animation-delay: 0.4s; }
+.animate-fade.delay-3 { animation-delay: 0.6s; }
+
+/* Pulse botão WhatsApp */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
+}
+.pulse-btn {
+    animation: pulse 2s infinite;
 }
 
 /* ===========================
    CARDS DE IMÓVEIS
 =========================== */
 .card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     border-radius: 1rem;
     overflow: hidden;
-    position: relative;
 }
 
 .card-hover:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 15px 25px rgba(0,0,0,0.25);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card-hover img {
@@ -75,11 +78,19 @@ body {
     border-top-right-radius: 1rem;
     object-fit: cover;
     height: 300px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .card-hover img:hover {
     transform: scale(1.05);
+    filter: brightness(1.05);
+}
+
+/* Preço com hover */
+.price-hover:hover {
+    transform: scale(1.05);
+    color: #ff6f61;
+    transition: all 0.3s ease;
 }
 
 /* ===========================
@@ -93,7 +104,7 @@ body {
 
 .btn-primary:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-success {
@@ -104,7 +115,7 @@ body {
 
 .btn-success:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* ===========================
@@ -136,7 +147,7 @@ footer a:hover {
 
 #socialTicker a img:hover {
     transform: scale(1.2);
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
 }
 
 /* ===========================
@@ -145,13 +156,7 @@ footer a:hover {
 .video-card {
     border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.video-card iframe {
-    width: 100%;
-    height: 100%;
-    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* ===========================
@@ -173,7 +178,7 @@ input.form-control, textarea.form-control {
 
 input.form-control:focus, textarea.form-control:focus {
     border-color: #4364F7;
-    box-shadow: 0 0 8px rgba(67,100,247,0.3);
+    box-shadow: 0 0 8px rgba(67, 100, 247, 0.3);
 }
 
 /* ===========================
@@ -205,13 +210,16 @@ h2 {
     .card-hover img {
         height: 270px;
     }
+
     .welcome-banner h1 {
         font-size: 2rem;
     }
+
     .welcome-banner p {
         font-size: 1rem;
     }
 }
+
 
 
 
