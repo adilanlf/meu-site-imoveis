@@ -51,7 +51,12 @@ body {
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
     object-fit: cover;
-    height: 250px;
+    height: 280px; /* aumentado de 250px para 280px */
+    transition: transform 0.3s ease;
+}
+
+.card-hover img:hover {
+    transform: scale(1.05);
 }
 
 /* ===========================
@@ -163,3 +168,13 @@ h2 {
     max-height: 600px;
     object-fit: contain;
 }
+
+/* ===========================
+   RESPONSIVIDADE
+=========================== */
+@media (max-width: 768px) {
+    .card-hover img {
+        height: 220px;
+    }
+}
+
