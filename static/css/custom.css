@@ -14,6 +14,9 @@ body {
 =========================== */
 .navbar-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
+    padding-top: 0.25rem;   /* diminui altura superior */
+    padding-bottom: 0.25rem; /* diminui altura inferior */
+    height: auto; /* permite que a altura se ajuste ao conteúdo */
 }
 
 .logo-central {
