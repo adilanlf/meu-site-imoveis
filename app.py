@@ -33,36 +33,62 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Rota Home (atualizada com busca e ordenação)
-@app.route("/", methods=["GET", "POST"])
+# Rota Home (com busca, filtros e ordenação)
+@app.route("/", methods=["GET"])
 def index():
     conn = get_db_connection()
 
-    # 🔍 Parâmetros de busca
-    busca = request.args.get("busca", "")
-    ordenar = request.args.get("ordenar", "id")
+    # parâmetros da querystring
+    busca = request.args.get("busca", "").strip()
+    dormitorios = request.args.get("dormitorios", "").strip()
+    banheiros = request.args.get("banheiros", "").strip()
+    ordenar = request.args.get("ordenar", "").strip()  # preco_asc, preco_desc, area, etc.
 
-    query = "SELECT * FROM imoveis WHERE 1=1"
+    where_clauses = []
     params = []
 
+    # busca por título/descrição
     if busca:
-        query += " AND (titulo LIKE ? OR descricao LIKE ?)"
+        where_clauses.append("(titulo LIKE ? OR descricao LIKE ?)")
         params.extend([f"%{busca}%", f"%{busca}%"])
 
-    # Ordenação
-    if ordenar == "preco":
-        query += " ORDER BY CAST(REPLACE(REPLACE(preco, 'R$', ''), ',', '') AS INTEGER) ASC"
-    elif ordenar == "destaque":
-        query += " ORDER BY destaque DESC"
-    else:
-        query += " ORDER BY id DESC"
+    # filtros numéricos (>=)
+    if dormitorios:
+        try:
+            d_min = int(dormitorios)
+            where_clauses.append("COALESCE(CAST(dormitorios AS INTEGER), 0) >= ?")
+            params.append(d_min)
+        except ValueError:
+            pass
 
+    if banheiros:
+        try:
+            b_min = int(banheiros)
+            where_clauses.append("COALESCE(CAST(banheiros AS INTEGER), 0) >= ?")
+            params.append(b_min)
+        except ValueError:
+            pass
+
+    where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
+
+    # ordenação: lidar com preco armazenado como texto removendo R$, pontos e vírgulas
+    if ordenar == "preco_asc":
+        order_sql = "ORDER BY CAST(REPLACE(REPLACE(REPLACE(preco, 'R$', ''), '.', ''), ',', '') AS INTEGER) ASC"
+    elif ordenar == "preco_desc":
+        order_sql = "ORDER BY CAST(REPLACE(REPLACE(REPLACE(preco, 'R$', ''), '.', ''), ',', '') AS INTEGER) DESC"
+    elif ordenar == "area":
+        order_sql = "ORDER BY COALESCE(CAST(area AS INTEGER), 0) DESC"
+    else:
+        # padrão: mais recentes (id descendente)
+        order_sql = "ORDER BY id DESC"
+
+    query = f"SELECT * FROM imoveis {where_sql} {order_sql}"
     imoveis = conn.execute(query, params).fetchall()
     conn.close()
 
-    current_year = datetime.now().year  # ✅ Ano atual
-    return render_template("index.html", imoveis=imoveis, current_year=current_year, busca=busca, ordenar=ordenar)
-
+    current_year = datetime.now().year
+    # note: seu template usa request.args.get diretamente, então não é obrigatório passar 'busca'/'ordenar'
+    return render_template("index.html", imoveis=imoveis, current_year=current_year)
 
 # Rota Detalhes do Imóvel
 @app.route("/imovel/<int:id>")
@@ -185,6 +211,7 @@ def delete_imovel(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
