@@ -183,6 +183,20 @@ body {
 /* ===========================
    RODAPÉ
 =========================== */
+.footer-gradient img {
+    height: 120px; /* aumenta a logo do rodapé */
+    max-width: 100%;
+    display: block;
+    margin: 0 auto; /* centraliza horizontalmente */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .footer-gradient img {
+        height: 90px; /* reduz a logo em telas pequenas */
+    }
+}
+
 .footer-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
 }
