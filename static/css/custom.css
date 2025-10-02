@@ -14,23 +14,48 @@ body {
 =========================== */
 .navbar-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
-    height: 140px; /* altura igual ao tamanho da logo */
-    padding: 0; /* remove espaçamento interno para centralizar a logo */
+    height: 90px; /* altura da faixa azul */
+    padding: 0;
     display: flex;
-    align-items: center;
-}
-
-.logo-central {
-    height: 140px; /* logo maior */
-}
-
-/* Centralização da navbar com login à direita */
-.navbar .container {
+    align-items: center; /* centraliza verticalmente o conteúdo */
     position: relative;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
+    z-index: 1;
 }
+
+/* Logo centralizada */
+.logo-destaque {
+    height: 130px; /* tamanho da logo */
+    max-width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    transform: translate(-50%, -50%);
+}
+
+/* Botões de login/Admin/Logout alinhados à direita */
+.navbar .login-buttons {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .logo-destaque {
+        height: 100px;
+    }
+
+    .navbar .login-buttons {
+        right: 10px;
+    }
+}
+
+
+
+
 
 /* ===========================
    BANNER DE BOAS-VINDAS

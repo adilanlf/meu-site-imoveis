@@ -14,17 +14,17 @@
 </head>
 <body class="bg-light">
 
-    <!-- Navbar com gradiente, logo centralizada e login à direita -->
+    <!-- Navbar com gradiente fina + logo destacada -->
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-5 navbar-gradient">
         <div class="container d-flex justify-content-center align-items-center position-relative">
-            
-            <!-- Logotipo centralizado -->
+
+            <!-- Logotipo centralizado destacada -->
             <a class="navbar-brand mx-auto d-flex align-items-center" href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" class="logo-central">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" class="logo-destaque">
             </a>
 
             <!-- Login/Admin/Logout no canto direito -->
-            <div class="position-absolute end-0">
+            <div class="position-absolute end-0 me-3">
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('admin') }}" class="btn btn-light btn-sm me-2">Admin</a>
                     <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Sair</a>
@@ -62,4 +62,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
