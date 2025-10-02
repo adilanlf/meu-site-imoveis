@@ -184,7 +184,7 @@ body {
    RODAPÉ
 =========================== */
 .footer-gradient img {
-    height: 120px; /* aumenta a logo do rodapé */
+    height: 130px; /* aumenta a logo do rodapé */
     max-width: 100%;
     display: block;
     margin: 0 auto; /* centraliza horizontalmente */
