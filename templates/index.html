@@ -6,9 +6,9 @@
 <div class="container my-4">
 
     <!-- Banner de boas-vindas -->
-    <div class="welcome-banner text-center p-4 mb-5 shadow-sm rounded-4">
+    <div class="welcome-banner text-center mb-5 shadow-sm rounded-4">
         <h1 class="fw-bold">Seja bem-vindo à Celo Imóveis!</h1>
-        <p class="lead"><strong>Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</strong></p>
+        <p class="lead fw-bold">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
     </div>
 
     <!-- Topo: Redes Sociais + Vídeo Sobre Mim -->
@@ -38,7 +38,7 @@
 
     <!-- Imóveis Disponíveis -->
     <h2 class="mb-4">Imóveis Disponíveis</h2>
-    <div class="row">
+    <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 mb-4">
             <div class="card card-hover shadow-sm h-100 border-0">
@@ -50,19 +50,19 @@
                     <img src="{{ url_for('static', filename='no-image.jpg') }}" 
                          class="card-img-top" alt="Sem foto">
                 {% endif %}
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ imovel['titulo'] }}</h5>
                     <p class="text-success fw-bold">{{ imovel['preco'] }}</p>
-                    <div class="d-flex flex-wrap small text-muted mb-2">
+                    <div class="d-flex flex-wrap small text-muted mb-3">
                         <span class="me-3">🛏 {{ imovel['dormitorios'] }} dorms</span>
                         <span class="me-3">🛁 {{ imovel['banheiros'] }} banhs</span>
                         <span class="me-3">🚗 {{ imovel['vagas'] }} vagas</span>
                         <span class="me-3">📐 {{ imovel['area'] }} m²</span>
                     </div>
                     {% if imovel['destaque'] %}
-                        <span class="badge bg-warning text-dark mb-2">⭐ Destaque</span>
+                        <span class="badge bg-warning text-dark mb-3">⭐ Destaque</span>
                     {% endif %}
-                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm w-100">Ver detalhes</a>
+                    <a href="{{ url_for('detalhes', id=imovel['id']) }}" class="btn btn-primary btn-sm mt-auto">Ver detalhes</a>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
 <!-- Rodapé moderno -->
 <footer class="mt-5">
     <div class="container text-center py-4">
-        <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a></p>
+        <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com">E-mail</a></p>
         <div class="d-flex justify-content-center gap-3 mb-2">
             <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
                 <img src="{{ url_for('static', filename='icons/facebook.png') }}" alt="Facebook" width="40">
@@ -85,7 +85,7 @@
                 <img src="{{ url_for('static', filename='icons/whatsapp.png') }}" alt="WhatsApp" width="40">
             </a>
         </div>
-        <p class="small mb-0">&copy; {{ current_year }} Meu Site de Imóveis. Todos os direitos reservados.</p>
+        <p class="small mb-0">&copy; {{ current_year }} Celo Imóveis. Todos os direitos reservados.</p>
     </div>
 </footer>
 
@@ -105,3 +105,4 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+

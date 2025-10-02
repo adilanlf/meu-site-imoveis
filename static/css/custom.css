@@ -1,162 +1,165 @@
-/* ---------------------- */
-/* Geral / Corpo da página */
-/* ---------------------- */
+/* ===========================
+   FONTE GLOBAL
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f0f4f8 0%, #d9e4ec 50%, #ffffff 100%);
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
     color: #333;
-    margin: 0;
-    padding: 0;
 }
 
-/* ---------------------- */
-/* Navbar */
-/* ---------------------- */
-.navbar {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* ---------------------- */
-/* Banner de boas-vindas */
-/* ---------------------- */
+/* ===========================
+   BANNER DE BOAS-VINDAS
+=========================== */
 .welcome-banner {
-    background: linear-gradient(135deg, #e0f7fa, #ffffff);
-    border: 1px solid #d0e8ed;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #6FB1FC, #4364F7);
+    color: #fff;
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
 }
 
 .welcome-banner h1 {
-    color: #004c99;
     font-weight: 700;
+    font-size: 2.5rem;
 }
 
 .welcome-banner p {
-    color: #333;
-    font-size: 1.2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1rem;
 }
 
-/* ---------------------- */
-/* Cards de imóveis */
-/* ---------------------- */
-.card-img-top {
-    height: 220px;
-    object-fit: cover;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
+/* ===========================
+   CARDS DE IMÓVEIS
+=========================== */
 .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 12px;
-    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
 }
 
 .card-hover:hover {
     transform: translateY(-7px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
 }
 
-/* ---------------------- */
-/* Botões */
-/* ---------------------- */
+.card-hover img {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    object-fit: cover;
+    height: 200px;
+}
+
+/* ===========================
+   BOTÕES
+=========================== */
 .btn-primary {
-    background: linear-gradient(90deg, #0066cc, #004c99);
+    background: linear-gradient(90deg, #4364F7, #6FB1FC);
     border: none;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(90deg, #004c99, #002966);
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-success {
-    background: linear-gradient(90deg, #28a745, #1e7e34);
+    background: linear-gradient(90deg, #28a745, #71d88b);
     border: none;
+    transition: all 0.3s ease;
 }
 
 .btn-success:hover {
-    background: linear-gradient(90deg, #1e7e34, #14521f);
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* ---------------------- */
-/* Títulos e textos */
-/* ---------------------- */
-h1,h2,h3,h4,h5 {
-    font-weight: 600;
-}
-
-.lead {
-    font-size: 1.2rem;
-}
-
-/* ---------------------- */
-/* Redes sociais / slider */
-/* ---------------------- */
-#socialTicker {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    overflow-x: hidden;
-}
-
-#socialTicker img {
-    width: 60px;
-    height: 60px;
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-
-#socialTicker img:hover {
-    transform: scale(1.2);
-}
-
-/* ---------------------- */
-/* Vídeo Sobre Mim */
-/* ---------------------- */
-.video-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-}
-
-/* ---------------------- */
-/* Rodapé */
-/* ---------------------- */
+/* ===========================
+   RODAPÉ
+=========================== */
 footer {
-    background: #004c99;
-    color: white;
-    padding: 30px 0;
-    text-align: center;
-    margin-top: 50px;
+    background: linear-gradient(90deg, #0052D4, #4364F7);
+    color: #fff;
 }
 
 footer a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s;
+    color: #fff;
+    transition: all 0.3s ease;
 }
 
 footer a:hover {
-    color: #ffcc00;
+    text-decoration: underline;
 }
 
-/* Ícones do rodapé */
-footer img {
+/* ===========================
+   ÍCONES SOCIAIS
+=========================== */
+#socialTicker a img {
     width: 40px;
     height: 40px;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 50%;
 }
 
-footer img:hover {
+#socialTicker a img:hover {
     transform: scale(1.2);
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
 }
 
-/* ---------------------- */
-/* Pequenos ajustes de espaçamento */
-/* ---------------------- */
-.container {
-    padding-top: 20px;
-    padding-bottom: 40px;
+/* ===========================
+   VÍDEO CARD
+=========================== */
+.video-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   ALERTS
+=========================== */
+.alert {
+    border-radius: 1rem;
+    font-weight: 500;
+}
+
+/* ===========================
+   FORMULÁRIOS
+=========================== */
+input.form-control, textarea.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+input.form-control:focus, textarea.form-control:focus {
+    border-color: #4364F7;
+    box-shadow: 0 0 8px rgba(67, 100, 247, 0.3);
+}
+
+/* ===========================
+   OUTROS AJUSTES
+=========================== */
+h2 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.card-body h5 {
+    font-weight: 600;
+}
+
+.text-success {
+    font-weight: 700;
+}
+
+/* Pequeno ajuste para responsividade de imagens de detalhes */
+.carousel-item img {
+    max-height: 600px;
+    object-fit: contain;
 }
