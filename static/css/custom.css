@@ -62,29 +62,40 @@ body {
 =========================== */
 .banner-gradient-inverted {
     background: linear-gradient(135deg, #4364F7, #6FB1FC); /* do tom mais forte para mais claro */
-    color: #000;
+    color: #000; /* textos pretos */
     border-radius: 1rem;
-    padding: 3rem 2rem;
-    text-align: center;
+    height: 170px; /* altura mais fina da faixa */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centraliza verticalmente */
+    align-items: center; /* centraliza horizontalmente */
+    padding: 0 2rem; /* espaçamento lateral */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
 }
 
-.banner-gradient-inverted h1,
+.banner-gradient-inverted h2,
 .banner-gradient-inverted p {
     color: #000;
+    margin: 0; /* remove margens padrão */
 }
 
-.banner-gradient-inverted h1 {
-    font-weight: 700;
-    font-size: 2.5rem;
+/* Responsividade */
+@media (max-width: 768px) {
+    .banner-gradient-inverted {
+        height: auto; /* permite que encolha com o conteúdo em telas pequenas */
+        padding: 1.5rem 1rem;
+    }
+
+    .banner-gradient-inverted h2 {
+        font-size: 1.8rem;
+    }
+
+    .banner-gradient-inverted p {
+        font-size: 1rem;
+    }
 }
 
-.banner-gradient-inverted p {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 1rem;
-}
 
 /* ===========================
    ANIMAÇÕES
