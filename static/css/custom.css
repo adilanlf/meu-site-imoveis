@@ -10,11 +10,21 @@ body {
 }
 
 /* ===========================
+   NAVBAR E BANNER GRADIENTE
+=========================== */
+.navbar-gradient {
+    background: linear-gradient(90deg, #4364F7, #6FB1FC);
+}
+
+.banner-gradient {
+    background: linear-gradient(135deg, #4364F7, #6FB1FC);
+    color: #fff; /* texto claro sobre o gradiente */
+}
+
+/* ===========================
    BANNER DE BOAS-VINDAS
 =========================== */
 .welcome-banner {
-    background: linear-gradient(135deg, #6FB1FC, #4364F7);
-    color: #000; /* Texto em preto */
     border-radius: 1rem;
     padding: 3rem 2rem;
     text-align: center;
@@ -25,14 +35,12 @@ body {
 .welcome-banner h1 {
     font-weight: 700;
     font-size: 2.5rem;
-    color: #000; /* Texto em preto */
 }
 
 .welcome-banner p {
     font-weight: 600;
     font-size: 1.1rem;
     margin-top: 1rem;
-    color: #000; /* Texto em preto */
 }
 
 /* ===========================
@@ -123,8 +131,8 @@ body {
 /* ===========================
    RODAPÉ
 =========================== */
-footer {
-    background: linear-gradient(90deg, #0052D4, #4364F7);
+.footer-gradient {
+    background: linear-gradient(90deg, #4364F7, #6FB1FC);
     color: #fff;
 }
 
@@ -221,27 +229,10 @@ h2 {
         font-size: 1rem;
     }
 
-    /* Logo navbar menor em mobile */
-    .navbar .navbar-brand img {
-        height: 50px;
-    }
-
-    /* Logo rodapé menor em mobile */
-    footer img {
-        height: 60px;
-    }
+    .navbar .navbar-brand img { height: 60px; }
+    footer img { height: 60px; }
 }
 
-/* ===========================
-   NAVBAR LOGO E TEXTO PRETO
-=========================== */
-.navbar .navbar-brand {
-    color: #000 !important;
-}
-
-.navbar .navbar-brand:hover {
-    color: #000 !important;
-}
 
 
 

@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container my-4">
 
-    <!-- Banner de boas-vindas -->
-    <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 animate-fade">
+    <!-- Banner de boas-vindas com gradiente invertido -->
+    <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 animate-fade banner-gradient">
         <h1 class="fw-bold">Seja bem-vindo à Celo Imóveis!</h1>
         <p class="lead fw-bold">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
         <a href="https://wa.me/5513991985274" target="_blank" class="btn btn-success btn-lg mt-3 pulse-btn">Fale Conosco no WhatsApp</a>
@@ -71,26 +71,6 @@
     </div>
 </div>
 
-<!-- Rodapé moderno -->
-<footer class="mt-5 bg-dark text-white">
-    <div class="container text-center py-4">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" width="100" class="mb-3">
-        <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a></p>
-        <div class="d-flex justify-content-center gap-3 mb-2">
-            <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
-                <img src="{{ url_for('static', filename='icons/facebook.png') }}" alt="Facebook" width="40">
-            </a>
-            <a href="https://www.instagram.com/negao_adilan?igsh=MTZxdmszMXQ2YmMycA==" target="_blank">
-                <img src="{{ url_for('static', filename='icons/instagram.png') }}" alt="Instagram" width="40">
-            </a>
-            <a href="https://wa.me/qr/7ZPJQVIHHFUWF1" target="_blank">
-                <img src="{{ url_for('static', filename='icons/whatsapp.png') }}" alt="WhatsApp" width="40">
-            </a>
-        </div>
-        <p class="small mb-0">&copy; {{ current_year }} Celo Imóveis. Todos os direitos reservados.</p>
-    </div>
-</footer>
-
 <!-- Slider contínuo redes sociais -->
 <script>
 const ticker = document.getElementById('socialTicker');
@@ -106,6 +86,7 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
 
 

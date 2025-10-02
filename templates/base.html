@@ -14,12 +14,12 @@
 </head>
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-5">
+    <!-- Navbar com gradiente -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-5 navbar-gradient">
         <div class="container">
             <!-- Logotipo maior -->
             <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" height="65" class="me-2">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" height="80" class="me-2">
                 Celo Imóveis
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -51,10 +51,9 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Rodapé moderno com logo -->
-    <footer class="mt-5 bg-primary text-white">
+    <!-- Rodapé moderno com logo e gradiente -->
+    <footer class="mt-5 footer-gradient text-white">
         <div class="container text-center py-4">
-            <!-- Logo maior no rodapé -->
             <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" height="80" class="mb-3">
             <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a></p>
             <p class="small mb-0">&copy; {{ current_year }} Celo Imóveis. Todos os direitos reservados.</p>
@@ -65,5 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
