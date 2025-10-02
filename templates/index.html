@@ -5,37 +5,51 @@
 {% block content %}
 <div class="container my-4">
 
-    <!-- Banner -->
+    <!-- Banner de boas-vindas com gradiente invertido e textos pretos -->
     <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 banner-gradient-inverted animate-fade">
         <h2 class="fw-bold text-dark">Seja bem-vindo(a) à Celo Imóveis!</h2>
         <p class="lead fw-bold text-dark">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
         <a href="https://wa.me/5513991985274" target="_blank" class="btn btn-success btn-lg mt-3 pulse-btn">Fale Conosco no WhatsApp</a>
     </div>
 
-    <!-- Filtros -->
-    <div class="mb-4 d-flex flex-wrap align-items-center gap-3">
-        <form method="get" class="d-flex gap-2 flex-wrap">
-            <select name="sort" class="form-select">
-                <option value="">Ordenar por</option>
-                <option value="preco_desc" {% if request.args.get('sort') == 'preco_desc' %}selected{% endif %}>Preço: Maior</option>
-                <option value="preco_asc" {% if request.args.get('sort') == 'preco_asc' %}selected{% endif %}>Preço: Menor</option>
-                <option value="praia_asc" {% if request.args.get('sort') == 'praia_asc' %}selected{% endif %}>Mais próximo da praia</option>
-                <option value="praia_desc" {% if request.args.get('sort') == 'praia_desc' %}selected{% endif %}>Mais longe da praia</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Aplicar</button>
-        </form>
+    <!-- Topo: Redes Sociais + Vídeo -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-7 mb-3 mb-md-0 animate-fade delay-1">
+            <h2 class="mb-3">Redes Sociais</h2>
+            <div class="d-flex overflow-hidden" id="socialTicker" style="gap: 25px;">
+                <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/facebook.png') }}" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/negao_adilan?igsh=MTZxdmszMXQ2YmMycA==" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/instagram.png') }}" alt="Instagram">
+                </a>
+                <a href="https://wa.me/qr/7ZPJQVIHHFUWF1" target="_blank">
+                    <img src="{{ url_for('static', filename='icons/whatsapp.png') }}" alt="WhatsApp">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-5 animate-fade delay-2">
+            <h2 class="mb-3">Um pouco de Mongaguá</h2>
+            <div class="ratio ratio-16x9 video-card shadow-lg">
+                <iframe src="https://www.youtube.com/embed/sP1Y_4Qm7F0?si=VQymXvum53r8EBJq" title="Sobre Mongaguá" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 
-    <!-- Imóveis -->
+    <!-- Imóveis Disponíveis -->
+    <h2 class="mb-4">Imóveis Disponíveis</h2>
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
             <div class="card card-hover shadow-lg h-100 border-0">
                 {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
                 {% if fotos %}
-                    <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" class="card-img-top" alt="Foto do imóvel">
+                    <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
+                         class="card-img-top" alt="Foto do imóvel">
                 {% else %}
-                    <img src="{{ url_for('static', filename='no-image.jpg') }}" class="card-img-top" alt="Sem foto">
+                    <img src="{{ url_for('static', filename='no-image.jpg') }}" 
+                         class="card-img-top" alt="Sem foto">
                 {% endif %}
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ imovel['titulo'] }}</h5>
@@ -56,6 +70,19 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Slider contínuo redes sociais -->
+<script>
+const ticker = document.getElementById('socialTicker');
+let scrollPos = 0;
+function moveTicker() {
+    if(ticker) {
+        scrollPos += 1;
+        if(scrollPos >= ticker.scrollWidth / 2) scrollPos = 0;
+        ticker.scrollTo({ left: scrollPos, behavior: 'smooth' });
+        requestAnimationFrame(moveTicker);
+    }
+}
+moveTicker();
+</script>
 {% endblock %}
-
-
