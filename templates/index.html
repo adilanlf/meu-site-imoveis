@@ -5,14 +5,14 @@
 {% block content %}
 <div class="container my-4">
 
-    <!-- Banner de boas-vindas com gradiente invertido e textos pretos -->
+    <!-- Banner de boas-vindas -->
     <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 banner-gradient-inverted animate-fade">
         <h2 class="fw-bold text-dark">Seja bem-vindo(a) à Celo Imóveis!</h2>
         <p class="lead fw-bold text-dark">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
         <a href="https://wa.me/5513991985274" target="_blank" class="btn btn-success btn-lg mt-3 pulse-btn">Fale Conosco no WhatsApp</a>
     </div>
 
-    <!-- Topo: Redes Sociais + Vídeo -->
+    <!-- Redes sociais + Vídeo -->
     <div class="row mb-5 align-items-center">
         <div class="col-md-7 mb-3 mb-md-0 animate-fade delay-1">
             <h2 class="mb-3">Redes Sociais</h2>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <!-- Imóveis Disponíveis -->
+    <!-- Título -->
     <h2 class="mb-4">Imóveis Disponíveis</h2>
 
     <!-- Filtros -->
@@ -74,6 +74,7 @@
         </div>
     </form>
 
+    <!-- Listagem -->
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
@@ -106,7 +107,7 @@
     </div>
 </div>
 
-<!-- Slider contínuo redes sociais -->
+<!-- Slider redes sociais -->
 <script>
 const ticker = document.getElementById('socialTicker');
 let scrollPos = 0;
@@ -121,4 +122,5 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
