@@ -39,6 +39,41 @@
 
     <!-- Imóveis Disponíveis -->
     <h2 class="mb-4">Imóveis Disponíveis</h2>
+
+    <!-- Filtros -->
+    <form method="GET" action="{{ url_for('index') }}" class="row g-3 mb-4 p-3 bg-white shadow-sm rounded">
+        <div class="col-md-3">
+            <input type="text" name="busca" class="form-control" placeholder="Buscar por título ou descrição" value="{{ request.args.get('busca', '') }}">
+        </div>
+        <div class="col-md-2">
+            <select name="dormitorios" class="form-select">
+                <option value="">Dormitórios</option>
+                <option value="1" {% if request.args.get('dormitorios') == '1' %}selected{% endif %}>1+</option>
+                <option value="2" {% if request.args.get('dormitorios') == '2' %}selected{% endif %}>2+</option>
+                <option value="3" {% if request.args.get('dormitorios') == '3' %}selected{% endif %}>3+</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="banheiros" class="form-select">
+                <option value="">Banheiros</option>
+                <option value="1" {% if request.args.get('banheiros') == '1' %}selected{% endif %}>1+</option>
+                <option value="2" {% if request.args.get('banheiros') == '2' %}selected{% endif %}>2+</option>
+                <option value="3" {% if request.args.get('banheiros') == '3' %}selected{% endif %}>3+</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="ordenar" class="form-select">
+                <option value="">Ordenar</option>
+                <option value="preco_asc" {% if request.args.get('ordenar') == 'preco_asc' %}selected{% endif %}>Preço: Menor → Maior</option>
+                <option value="preco_desc" {% if request.args.get('ordenar') == 'preco_desc' %}selected{% endif %}>Preço: Maior → Menor</option>
+                <option value="area" {% if request.args.get('ordenar') == 'area' %}selected{% endif %}>Área</option>
+            </select>
+        </div>
+        <div class="col-md-3 text-end">
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
@@ -86,3 +121,4 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
