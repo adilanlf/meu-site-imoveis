@@ -14,7 +14,7 @@
 <body class="bg-light">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-5">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">🏠 Celo Imóveis</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -33,11 +33,18 @@
         </div>
     </nav>
 
+    <!-- Banner de boas-vindas -->
+    <div class="container mb-5">
+        <div class="welcome-banner text-center p-5 shadow-lg">
+            <h1>Seja bem-vindo à Celo Imóveis!</h1>
+        </div>
+    </div>
+
     <!-- Container principal -->
     <div class="container">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="alert alert-warning">
+                <div class="alert alert-warning shadow-sm">
                     {{ messages[0] }}
                 </div>
             {% endif %}
