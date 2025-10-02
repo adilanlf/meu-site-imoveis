@@ -220,6 +220,16 @@ h2 {
     .welcome-banner p {
         font-size: 1rem;
     }
+
+    /* Logo navbar menor em mobile */
+    .navbar .navbar-brand img {
+        height: 50px;
+    }
+
+    /* Logo rodapé menor em mobile */
+    footer img {
+        height: 60px;
+    }
 }
 
 /* ===========================
@@ -232,6 +242,7 @@ h2 {
 .navbar .navbar-brand:hover {
     color: #000 !important;
 }
+
 
 
 
