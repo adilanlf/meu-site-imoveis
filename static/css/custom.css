@@ -14,29 +14,30 @@ body {
 =========================== */
 .navbar-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
-    padding-top: 0.25rem;   /* diminui altura superior */
-    padding-bottom: 0.25rem; /* diminui altura inferior */
-    height: auto; /* permite que a altura se ajuste ao conteúdo */
+    height: 140px; /* altura igual ao tamanho da logo */
+    padding: 0; /* remove espaçamento interno para centralizar a logo */
+    display: flex;
+    align-items: center;
 }
 
 .logo-central {
-    height: 80px; /* tamanho igual ao do rodapé */
+    height: 140px; /* logo maior */
 }
 
-/* Centralização perfeita em todas as telas */
+/* Centralização da navbar com login à direita */
 .navbar .container {
+    position: relative;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
 }
-
 
 /* ===========================
    BANNER DE BOAS-VINDAS
 =========================== */
 .banner-gradient-inverted {
     background: linear-gradient(135deg, #4364F7, #6FB1FC); /* do tom mais forte para mais claro */
-    color: #000; /* textos pretos */
+    color: #000;
     border-radius: 1rem;
     padding: 3rem 2rem;
     text-align: center;
@@ -76,7 +77,6 @@ body {
 .animate-fade.delay-2 { animation-delay: 0.4s; }
 .animate-fade.delay-3 { animation-delay: 0.6s; }
 
-/* Pulse botão WhatsApp */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -113,7 +113,6 @@ body {
     filter: brightness(1.05);
 }
 
-/* Preço com hover */
 .price-hover:hover {
     transform: scale(1.05);
     color: #ff6f61;
@@ -247,8 +246,8 @@ h2 {
         font-size: 1rem;
     }
 
-    .navbar-brand img {
-        height: 60px;
+    .logo-central {
+        height: 100px; /* menor em telas pequenas */
     }
 
     .footer-gradient img {
