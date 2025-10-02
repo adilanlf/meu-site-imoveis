@@ -174,7 +174,7 @@ h2 {
 =========================== */
 @media (max-width: 768px) {
     .card-hover img {
-        height: 220px;
+        height: 250px;
     }
 }
 
