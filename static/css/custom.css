@@ -16,9 +16,17 @@ body {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
 }
 
-.navbar-brand img {
-    height: 80px; /* logo maior */
+.logo-central {
+    height: 80px; /* tamanho igual ao do rodapé */
 }
+
+/* Centralização perfeita em todas as telas */
+.navbar .container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
 
 /* ===========================
    BANNER DE BOAS-VINDAS
