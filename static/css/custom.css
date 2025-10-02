@@ -10,21 +10,22 @@ body {
 }
 
 /* ===========================
-   NAVBAR E BANNER GRADIENTE
+   NAVBAR
 =========================== */
 .navbar-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
 }
 
-.banner-gradient {
-    background: linear-gradient(135deg, #4364F7, #6FB1FC);
-    color: #fff; /* texto claro sobre o gradiente */
+.navbar-brand img {
+    height: 80px; /* logo maior */
 }
 
 /* ===========================
    BANNER DE BOAS-VINDAS
 =========================== */
-.welcome-banner {
+.banner-gradient-inverted {
+    background: linear-gradient(135deg, #4364F7, #6FB1FC); /* do tom mais forte para mais claro */
+    color: #000; /* textos pretos */
     border-radius: 1rem;
     padding: 3rem 2rem;
     text-align: center;
@@ -32,12 +33,17 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-.welcome-banner h1 {
+.banner-gradient-inverted h1,
+.banner-gradient-inverted p {
+    color: #000;
+}
+
+.banner-gradient-inverted h1 {
     font-weight: 700;
     font-size: 2.5rem;
 }
 
-.welcome-banner p {
+.banner-gradient-inverted p {
     font-weight: 600;
     font-size: 1.1rem;
     margin-top: 1rem;
@@ -133,7 +139,6 @@ body {
 =========================== */
 .footer-gradient {
     background: linear-gradient(90deg, #4364F7, #6FB1FC);
-    color: #fff;
 }
 
 footer a {
@@ -221,22 +226,21 @@ h2 {
         height: 270px;
     }
 
-    .welcome-banner h1 {
+    .welcome-banner h1,
+    .banner-gradient-inverted h1 {
         font-size: 2rem;
     }
 
-    .welcome-banner p {
+    .welcome-banner p,
+    .banner-gradient-inverted p {
         font-size: 1rem;
     }
 
-    .navbar .navbar-brand img { height: 60px; }
-    footer img { height: 60px; }
+    .navbar-brand img {
+        height: 60px;
+    }
+
+    .footer-gradient img {
+        height: 60px;
+    }
 }
-
-
-
-
-
-
-
-
