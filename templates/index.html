@@ -6,7 +6,7 @@
 <div class="container my-4">
 
     <!-- Banner de boas-vindas -->
-    <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4">
+    <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 animate-fade">
         <h1 class="fw-bold">Seja bem-vindo à Celo Imóveis!</h1>
         <p class="lead fw-bold">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
         <a href="https://wa.me/5513991985274" target="_blank" class="btn btn-success btn-lg mt-3 pulse-btn">Fale Conosco no WhatsApp</a>
@@ -31,8 +31,11 @@
 
         <div class="col-md-5">
             <h2 class="mb-3">Um pouco de Mongaguá</h2>
-            <div class="ratio ratio-16x9 video-card shadow-lg">
-                <iframe src="https://www.youtube.com/embed/sP1Y_4Qm7F0?si=VQymXvum53r8EBJq" title="Sobre Mim" allowfullscreen></iframe>
+            <div class="video-card shadow-lg">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/sP1Y_4Qm7F0?si=VQymXvum53r8EBJq" 
+                            title="Sobre Mim" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
@@ -42,7 +45,7 @@
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6">
-            <div class="card card-hover shadow-lg h-100 border-0">
+            <div class="card card-hover shadow-lg h-100 border-0 position-relative">
                 {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
                 {% if fotos %}
                     <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
@@ -105,6 +108,7 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
 
 

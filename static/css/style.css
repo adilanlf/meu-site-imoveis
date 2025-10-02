@@ -1,98 +1,22 @@
-/* Geral */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0 20px;
-}
-
-header {
-    text-align: center;
-    padding: 30px 0;
-    background-color: #4CAF50;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-h1 {
-    margin: 0;
-}
-
-/* Lista de imóveis */
-.imoveis-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-/* Card de imóvel */
-.imovel-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    width: 70%;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.imovel-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-/* Imagem do imóvel */
-.imovel-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Informações */
-.info {
-    padding: 20px;
-}
-
-.info h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-.info p {
-    margin: 8px 0;
-    color: #555;
-}
-
-.info .preco {
-    font-size: 1.2em;
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-/* Links */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
 .galeria {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
 }
 
 .galeria img {
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    width: 200px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .galeria img:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
+
