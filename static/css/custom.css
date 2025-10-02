@@ -14,7 +14,7 @@ body {
 =========================== */
 .welcome-banner {
     background: linear-gradient(135deg, #6FB1FC, #4364F7);
-    color: #fff;
+    color: #000; /* Texto em preto */
     border-radius: 1rem;
     padding: 3rem 2rem;
     text-align: center;
@@ -25,12 +25,14 @@ body {
 .welcome-banner h1 {
     font-weight: 700;
     font-size: 2.5rem;
+    color: #000; /* Texto em preto */
 }
 
 .welcome-banner p {
     font-weight: 600;
     font-size: 1.1rem;
     margin-top: 1rem;
+    color: #000; /* Texto em preto */
 }
 
 /* ===========================
@@ -219,6 +221,18 @@ h2 {
         font-size: 1rem;
     }
 }
+
+/* ===========================
+   NAVBAR LOGO E TEXTO PRETO
+=========================== */
+.navbar .navbar-brand {
+    color: #000 !important;
+}
+
+.navbar .navbar-brand:hover {
+    color: #000 !important;
+}
+
 
 
 
