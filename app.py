@@ -33,16 +33,35 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Rota Home (atualizada para current_year)
-@app.route("/")
+# Rota Home (atualizada com busca e ordenação)
+@app.route("/", methods=["GET", "POST"])
 def index():
     conn = get_db_connection()
-    imoveis = conn.execute("SELECT * FROM imoveis").fetchall()
-    conn.close()
-    current_year = datetime.now().year  # ✅ Ano atual
-    return render_template("index.html", imoveis=imoveis, current_year=current_year)
 
-# ... resto do app.py continua normalmente
+    # 🔍 Parâmetros de busca
+    busca = request.args.get("busca", "")
+    ordenar = request.args.get("ordenar", "id")
+
+    query = "SELECT * FROM imoveis WHERE 1=1"
+    params = []
+
+    if busca:
+        query += " AND (titulo LIKE ? OR descricao LIKE ?)"
+        params.extend([f"%{busca}%", f"%{busca}%"])
+
+    # Ordenação
+    if ordenar == "preco":
+        query += " ORDER BY CAST(REPLACE(REPLACE(preco, 'R$', ''), ',', '') AS INTEGER) ASC"
+    elif ordenar == "destaque":
+        query += " ORDER BY destaque DESC"
+    else:
+        query += " ORDER BY id DESC"
+
+    imoveis = conn.execute(query, params).fetchall()
+    conn.close()
+
+    current_year = datetime.now().year  # ✅ Ano atual
+    return render_template("index.html", imoveis=imoveis, current_year=current_year, busca=busca, ordenar=ordenar)
 
 
 # Rota Detalhes do Imóvel
@@ -166,5 +185,6 @@ def delete_imovel(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
