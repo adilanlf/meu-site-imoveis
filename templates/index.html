@@ -7,7 +7,6 @@
 
     <!-- Banner de boas-vindas -->
     <div class="welcome-banner text-center p-5 mb-5 shadow-lg rounded-4 animate-fade">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" class="mb-3" height="70">
         <h1 class="fw-bold">Seja bem-vindo à Celo Imóveis!</h1>
         <p class="lead fw-bold">Estamos felizes em ajudar você a realizar o sonho da sua casa própria.</p>
         <a href="https://wa.me/5513991985274" target="_blank" class="btn btn-success btn-lg mt-3 pulse-btn">Fale Conosco no WhatsApp</a>
@@ -73,8 +72,9 @@
 </div>
 
 <!-- Rodapé moderno -->
-<footer class="mt-5">
+<footer class="mt-5 bg-dark text-white">
     <div class="container text-center py-4">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" width="100" class="mb-3">
         <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a></p>
         <div class="d-flex justify-content-center gap-3 mb-2">
             <a href="https://www.facebook.com/share/1T3EbExAaZ/" target="_blank">
@@ -106,6 +106,7 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
 
 
