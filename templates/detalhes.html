@@ -3,10 +3,14 @@
 
 {% block content %}
 <div class="container my-4">
+    <!-- 🔙 Botão de voltar para a listagem -->
     <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mb-3">⬅ Voltar</a>
 
+    <!-- 🏠 Card principal com galeria e detalhes -->
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
+
+            <!-- 🎞️ Carrossel de imagens do imóvel -->
             <div class="col-md-7">
                 <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -26,31 +30,39 @@
                 </div>
             </div>
 
+            <!-- 🧾 Informações principais -->
             <div class="col-md-5 d-flex align-items-center">
                 <div class="card-body p-4">
+
+                    <!-- 🏷️ Título -->
                     <h2 class="fw-bold">{{ imovel['titulo'] }}</h2>
 
+                    <!-- 📄 Descrição HTML (prioritária) -->
                     {% if imovel['descricao_html'] %}
                         <div class="mt-3 mb-4" style="white-space: pre-line;">
                             {{ imovel['descricao_html'] | safe }}
                         </div>
                     {% else %}
+                        <!-- Texto simples se não houver HTML -->
                         <p class="text-muted">{{ imovel['descricao'] }}</p>
                     {% endif %}
 
-                    <!-- Valor -->
+                    <!-- 💰 Valor do imóvel -->
                     <h4 class="fw-bold text-success mb-3">{{ imovel['preco'] }}</h4>
 
-                    <!-- 🔴 Bloco duplicado de Dormitórios, Banheiros, Vagas e Área foi removido -->
-
+                    <!-- ❌ Bloco duplicado de Dormitórios, Banheiros, Vagas e Área foi removido -->
+                    
+                    <!-- 📞 Ações de contato -->
                     <div class="d-grid gap-2">
-                        <!-- ✅ Corrigido: URL codificada para exibir caracteres especiais (#, etc.) -->
+
+                        <!-- ✅ Corrigido: URL codificada para WhatsApp (suporte a #, emojis e acentos) -->
                         <a href="https://wa.me/5513991985274?text={{ ('Olá, tenho interesse no imóvel ' + imovel['titulo']) | urlencode }}"
                            target="_blank" class="btn btn-success btn-lg">
                             📞 Contatar via WhatsApp
                         </a>
 
-                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}"
+                        <!-- ✅ Atualizado: E-mail com assunto + corpo codificados corretamente -->
+                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}&body={{ ('Olá, tudo bem? Tenho interesse no imóvel ' + imovel['titulo'] + '. Poderia me passar mais detalhes, por favor?') | urlencode }}"
                            class="btn btn-outline-primary btn-lg">
                             ✉ Enviar E-mail
                         </a>
@@ -61,6 +73,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 
