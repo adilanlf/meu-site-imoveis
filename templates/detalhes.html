@@ -1,27 +1,19 @@
 {% extends "base.html" %}
-
 {% block title %}Detalhes do Imóvel{% endblock %}
 
 {% block content %}
 <div class="container my-4">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mb-3">⬅ Voltar</a>
 
-    <!-- Botão Voltar -->
-    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mb-3">⬅ Voltar para listagem</a>
-
-    <!-- Card principal -->
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
-            
-            <!-- Galeria de fotos -->
             <div class="col-md-7">
                 <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         {% for foto in fotos %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
-                            <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
-                                 class="d-block w-100"
-                                 style="max-height: 600px; object-fit: contain;"
-                                 alt="Foto do imóvel">
+                            <img src="{{ url_for('static', filename='uploads/' + foto) }}" class="d-block w-100"
+                                 style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
                         </div>
                         {% endfor %}
                     </div>
@@ -34,43 +26,45 @@
                 </div>
             </div>
 
-            <!-- Informações do imóvel -->
             <div class="col-md-5 d-flex align-items-center">
                 <div class="card-body p-4">
                     <h2 class="fw-bold">{{ imovel['titulo'] }}</h2>
-                    <p class="text-muted">{{ imovel['descricao'] }}</p>
+
+                    {% if imovel['descricao_html'] %}
+                        <div class="mt-3 mb-4" style="white-space: pre-line;">
+                            {{ imovel['descricao_html'] | safe }}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">{{ imovel['descricao'] }}</p>
+                    {% endif %}
 
                     <h4 class="fw-bold text-success mb-3">{{ imovel['preco'] }}</h4>
 
-                    <!-- Características -->
                     <ul class="list-unstyled small mb-4">
                         <li>🛏 Dormitórios: <strong>{{ imovel['dormitorios'] }}</strong></li>
                         <li>🛁 Banheiros: <strong>{{ imovel['banheiros'] }}</strong></li>
                         <li>🚗 Vagas: <strong>{{ imovel['vagas'] }}</strong></li>
                         <li>📐 Área: <strong>{{ imovel['area'] }} m²</strong></li>
                         {% if imovel['destaque'] %}
-                        <li>⭐ <span class="text-warning fw-bold">Imóvel em Destaque</span></li>
+                            <li>⭐ <span class="text-warning fw-bold">Imóvel em Destaque</span></li>
                         {% endif %}
                     </ul>
 
-                    <!-- Ações -->
                     <div class="d-grid gap-2">
-                        <a href="https://wa.me/5513991985274?text=Olá, tenho interesse no imóvel {{ imovel['titulo'] }}" 
-                           target="_blank" 
-                           class="btn btn-success btn-lg">
+                        <a href="https://wa.me/5513991985274?text=Olá, tenho interesse no imóvel {{ imovel['titulo'] }}"
+                           target="_blank" class="btn btn-success btn-lg">
                             📞 Contatar via WhatsApp
                         </a>
-                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}" 
+                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}"
                            class="btn btn-outline-primary btn-lg">
                             ✉ Enviar E-mail
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>
 {% endblock %}
+
 
