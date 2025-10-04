@@ -43,7 +43,10 @@
     <!-- Filtros -->
     <form method="GET" action="{{ url_for('index') }}" class="row g-3 mb-4 p-3 bg-white shadow-sm rounded">
         <div class="col-md-3">
-            <input type="text" name="busca" class="form-control" placeholder="Buscar por título ou descrição" value="{{ request.args.get('busca', '') }}">
+            <!-- # Atualizado: placeholder agora menciona o ID -->
+            <input type="text" name="busca" class="form-control" 
+                   placeholder="Buscar por título, descrição ou ID" 
+                   value="{{ request.args.get('busca', '') }}">
         </div>
         <div class="col-md-2">
             <select name="dormitorios" class="form-select">
