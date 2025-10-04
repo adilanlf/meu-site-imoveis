@@ -41,13 +41,15 @@
                     <!-- Valor -->
                     <h4 class="fw-bold text-success mb-3">{{ imovel['preco'] }}</h4>
 
-                    <!-- 🔴 Bloco duplicado de Dormitórios, Banheiros, Vagas e Área foi removido daqui -->
+                    <!-- 🔴 Bloco duplicado de Dormitórios, Banheiros, Vagas e Área foi removido -->
 
                     <div class="d-grid gap-2">
-                        <a href="https://wa.me/5513991985274?text=Olá, tenho interesse no imóvel {{ imovel['titulo'] }}"
+                        <!-- ✅ Corrigido: URL codificada para exibir caracteres especiais (#, etc.) -->
+                        <a href="https://wa.me/5513991985274?text={{ ('Olá, tenho interesse no imóvel ' + imovel['titulo']) | urlencode }}"
                            target="_blank" class="btn btn-success btn-lg">
                             📞 Contatar via WhatsApp
                         </a>
+
                         <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}"
                            class="btn btn-outline-primary btn-lg">
                             ✉ Enviar E-mail
@@ -59,6 +61,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 
