@@ -38,11 +38,20 @@
 
     <!-- Container principal -->
     <div class="container">
-        {% with messages = get_flashed_messages() %}
+
+        <!-- ✅ Sistema de mensagens de alerta melhorado -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="alert alert-warning shadow-sm">
-                    {{ messages[0] }}
-                </div>
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'warning' if category == 'warning' else 'info' }} alert-dismissible fade show shadow-sm mt-3" role="alert">
+                        {% if category == 'warning' %}
+                            ⚠️ <strong>Atenção:</strong> {{ message }}
+                        {% else %}
+                            ℹ️ {{ message }}
+                        {% endif %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% endfor %}
             {% endif %}
         {% endwith %}
 
@@ -53,7 +62,10 @@
     <footer class="mt-5 footer-gradient text-white">
         <div class="container text-center py-4">
             <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" height="80" class="mb-3">
-            <p class="mb-2">📞 Contato: <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a></p>
+            <p class="mb-2">📞 Contato: 
+                <a href="https://wa.me/5513991985274" class="text-white">WhatsApp</a> | 
+                ✉ <a href="mailto:adilan_lost@hotmail.com" class="text-white">E-mail</a>
+            </p>
             <p class="small mb-0">&copy; {{ current_year }} Celo Imóveis. Todos os direitos reservados.</p>
         </div>
     </footer>
@@ -62,6 +74,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 

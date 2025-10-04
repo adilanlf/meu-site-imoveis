@@ -33,7 +33,11 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Rota Home (com busca, filtros e ordenação)
+
+# ===========================================
+# 🏠 Rota Home (com busca, filtros e ordenação)
+# ✅ Adicionado suporte à busca direta por #ID exato
+# ===========================================
 @app.route("/", methods=["GET"])
 def index():
     conn = get_db_connection()
@@ -44,6 +48,21 @@ def index():
     banheiros = request.args.get("banheiros", "").strip()
     ordenar = request.args.get("ordenar", "").strip()  # preco_asc, preco_desc, area, etc.
 
+    # 🔍 NOVO: Busca direta por ID quando o termo começar com "#"
+    if busca.startswith("#"):
+        id_str = busca.lstrip("#").strip()
+        if id_str.isdigit():  # garante que vem número após "#"
+            imovel = conn.execute("SELECT * FROM imoveis WHERE id=?", (id_str,)).fetchone()
+            conn.close()
+            if imovel:
+                # ✅ Redireciona direto para a página de detalhes
+                return redirect(url_for("detalhes", id=id_str))
+            else:
+                # ⚠️ Caso o ID não exista, mostra alerta visual no topo
+                flash(f"Nenhum imóvel encontrado com o ID #{id_str}.", "warning")
+                return redirect(url_for("index"))
+
+    # 🧭 Caso não seja busca por ID, segue fluxo normal
     where_clauses = []
     params = []
 
@@ -71,7 +90,7 @@ def index():
 
     where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
-    # ordenação: lidar com preco armazenado como texto removendo R$, pontos e vírgulas
+    # ordenação
     if ordenar == "preco_asc":
         order_sql = "ORDER BY CAST(REPLACE(REPLACE(REPLACE(preco, 'R$', ''), '.', ''), ',', '') AS INTEGER) ASC"
     elif ordenar == "preco_desc":
@@ -79,7 +98,7 @@ def index():
     elif ordenar == "area":
         order_sql = "ORDER BY COALESCE(CAST(area AS INTEGER), 0) DESC"
     else:
-        # padrão: mais recentes (id descendente)
+        # padrão: mais recentes
         order_sql = "ORDER BY id DESC"
 
     query = f"SELECT * FROM imoveis {where_sql} {order_sql}"
@@ -87,10 +106,12 @@ def index():
     conn.close()
 
     current_year = datetime.now().year
-    # note: seu template usa request.args.get diretamente, então não é obrigatório passar 'busca'/'ordenar'
     return render_template("index.html", imoveis=imoveis, current_year=current_year)
 
-# Rota Detalhes do Imóvel
+
+# ===========================================
+# 🏘️ Rota Detalhes do Imóvel
+# ===========================================
 @app.route("/imovel/<int:id>")
 def detalhes(id):
     conn = get_db_connection()
@@ -101,7 +122,10 @@ def detalhes(id):
     fotos = imovel["fotos"].split(",") if imovel["fotos"] else []
     return render_template("detalhes.html", imovel=imovel, fotos=fotos)
 
-# Login
+
+# ===========================================
+# 🔐 Login / Logout
+# ===========================================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -112,17 +136,20 @@ def login():
             login_user(user)
             return redirect(url_for("admin"))
         else:
-            flash("Usuário ou senha incorretos")
+            flash("Usuário ou senha incorretos", "danger")
     return render_template("login.html")
 
-# Logout
+
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("index"))
 
-# Área Admin
+
+# ===========================================
+# ⚙️ Painel Administrativo
+# ===========================================
 @app.route("/admin")
 @login_required
 def admin():
@@ -131,7 +158,10 @@ def admin():
     conn.close()
     return render_template("admin.html", imoveis=imoveis)
 
-# Adicionar Imóvel
+
+# ===========================================
+# ➕ Adicionar Imóvel
+# ===========================================
 @app.route("/add", methods=["POST"])
 @login_required
 def add_imovel():
@@ -161,7 +191,10 @@ def add_imovel():
     conn.close()
     return redirect(url_for("admin"))
 
-# Editar Imóvel
+
+# ===========================================
+# ✏️ Editar Imóvel
+# ===========================================
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_imovel(id):
@@ -199,7 +232,10 @@ def edit_imovel(id):
     conn.close()
     return render_template("edit_imovel.html", imovel=imovel)
 
-# Deletar Imóvel
+
+# ===========================================
+# ❌ Deletar Imóvel
+# ===========================================
 @app.route("/delete/<int:id>")
 @login_required
 def delete_imovel(id):
@@ -209,8 +245,10 @@ def delete_imovel(id):
     conn.close()
     return redirect(url_for("admin"))
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
