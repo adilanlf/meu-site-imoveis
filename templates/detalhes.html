@@ -61,10 +61,10 @@
                             📞 Contatar via WhatsApp
                         </a>
 
-                        <!-- ✅ Atualizado: E-mail com assunto + corpo codificados corretamente -->
-                        <a href="mailto:adilan_lost@hotmail.com?subject={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}&body={{ ('Olá, tudo bem? Tenho interesse no imóvel ' + imovel['titulo'] + '. Poderia me passar mais detalhes, por favor?') | urlencode }}"
-                           class="btn btn-outline-primary btn-lg">
-                            ✉ Enviar E-mail
+                        <!-- ✅ Atualizado: Abre diretamente no Gmail com assunto e corpo automáticos -->
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=adilan_lost@hotmail.com&su={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}&body={{ ('Olá, tudo bem? Tenho interesse no imóvel ' + imovel['titulo'] + '. Poderia me passar mais detalhes, por favor?') | urlencode }}"
+                           target="_blank" class="btn btn-outline-primary btn-lg">
+                           ✉ Enviar E-mail
                         </a>
                     </div>
                 </div>
@@ -73,6 +73,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 
 
