@@ -38,17 +38,10 @@
                         <p class="text-muted">{{ imovel['descricao'] }}</p>
                     {% endif %}
 
+                    <!-- Valor -->
                     <h4 class="fw-bold text-success mb-3">{{ imovel['preco'] }}</h4>
 
-                    <ul class="list-unstyled small mb-4">
-                        <li>🛏 Dormitórios: <strong>{{ imovel['dormitorios'] }}</strong></li>
-                        <li>🛁 Banheiros: <strong>{{ imovel['banheiros'] }}</strong></li>
-                        <li>🚗 Vagas: <strong>{{ imovel['vagas'] }}</strong></li>
-                        <li>📐 Área: <strong>{{ imovel['area'] }} m²</strong></li>
-                        {% if imovel['destaque'] %}
-                            <li>⭐ <span class="text-warning fw-bold">Imóvel em Destaque</span></li>
-                        {% endif %}
-                    </ul>
+                    <!-- 🔴 Bloco duplicado de Dormitórios, Banheiros, Vagas e Área foi removido daqui -->
 
                     <div class="d-grid gap-2">
                         <a href="https://wa.me/5513991985274?text=Olá, tenho interesse no imóvel {{ imovel['titulo'] }}"
@@ -66,5 +59,6 @@
     </div>
 </div>
 {% endblock %}
+
 
 
