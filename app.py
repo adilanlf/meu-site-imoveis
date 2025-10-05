@@ -4,7 +4,9 @@ import sqlite3
 import os
 from datetime import datetime  # ✅ Import adicionado
 
-# Configurações
+# ===========================================
+# ⚙️ Configurações Iniciais
+# ===========================================
 app = Flask(__name__)
 app.secret_key = "sua_chave_secreta"  # Alterar para algo seguro
 
@@ -18,7 +20,9 @@ DATABASE = "database.db"
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "senha123")
 
-# User class para Flask-Login
+# ===========================================
+# 👤 Classe de Usuário (Flask-Login)
+# ===========================================
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
@@ -27,7 +31,9 @@ class User(UserMixin):
 def load_user(user_id):
     return User(user_id)
 
-# Função para conectar ao banco
+# ===========================================
+# 🗄️ Conexão com o Banco de Dados
+# ===========================================
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
@@ -36,7 +42,7 @@ def get_db_connection():
 
 # ===========================================
 # 🏠 Rota Home (com busca, filtros e ordenação)
-# ✅ Adicionado suporte à busca direta por #ID exato
+# ✅ Adicionado suporte à busca direta por #ID e filtro “Somente Destaques”
 # ===========================================
 @app.route("/", methods=["GET"])
 def index():
@@ -46,32 +52,35 @@ def index():
     busca = request.args.get("busca", "").strip()
     dormitorios = request.args.get("dormitorios", "").strip()
     banheiros = request.args.get("banheiros", "").strip()
-    ordenar = request.args.get("ordenar", "").strip()  # preco_asc, preco_desc, area, etc.
+    ordenar = request.args.get("ordenar", "").strip()
+    destaque = request.args.get("destaque", "").strip()  # 🌟 novo filtro
 
-    # 🔍 NOVO: Busca direta por ID quando o termo começar com "#"
+    # 🔍 Busca direta por ID (#ID)
     if busca.startswith("#"):
         id_str = busca.lstrip("#").strip()
-        if id_str.isdigit():  # garante que vem número após "#"
+        if id_str.isdigit():
             imovel = conn.execute("SELECT * FROM imoveis WHERE id=?", (id_str,)).fetchone()
             conn.close()
             if imovel:
-                # ✅ Redireciona direto para a página de detalhes
                 return redirect(url_for("detalhes", id=id_str))
             else:
-                # ⚠️ Caso o ID não exista, mostra alerta visual no topo
                 flash(f"Nenhum imóvel encontrado com o ID #{id_str}.", "warning")
                 return redirect(url_for("index"))
 
-    # 🧭 Caso não seja busca por ID, segue fluxo normal
+    # 🧭 Filtros normais
     where_clauses = []
     params = []
 
-    # busca por título/descrição
+    # busca por título ou descrição
     if busca:
         where_clauses.append("(titulo LIKE ? OR descricao LIKE ?)")
         params.extend([f"%{busca}%", f"%{busca}%"])
 
-    # filtros numéricos (>=)
+    # filtro: somente destaques
+    if destaque == "1":
+        where_clauses.append("destaque = 1")
+
+    # filtros numéricos
     if dormitorios:
         try:
             d_min = int(dormitorios)
@@ -98,7 +107,6 @@ def index():
     elif ordenar == "area":
         order_sql = "ORDER BY COALESCE(CAST(area AS INTEGER), 0) DESC"
     else:
-        # padrão: mais recentes
         order_sql = "ORDER BY id DESC"
 
     query = f"SELECT * FROM imoveis {where_sql} {order_sql}"
@@ -248,6 +256,7 @@ def delete_imovel(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 

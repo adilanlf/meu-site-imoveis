@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %}Imóveis Disponíveis{% endblock %}
-
 {% block content %}
 <div class="container my-4">
 
@@ -40,10 +38,11 @@
     <!-- Título -->
     <h2 class="mb-4">Imóveis Disponíveis</h2>
 
-    <!-- Filtros -->
-    <form method="GET" action="{{ url_for('index') }}" class="row g-3 mb-4 p-3 bg-white shadow-sm rounded">
+    <!-- ===========================================
+         🧭 Filtros de Busca (inclui filtro “Somente Destaques”)
+         =========================================== -->
+    <form method="GET" action="{{ url_for('index') }}" class="row g-3 mb-4 p-3 bg-white shadow-sm rounded align-items-center">
         <div class="col-md-3">
-            <!-- # Atualizado: placeholder agora menciona o ID -->
             <input type="text" name="busca" class="form-control" 
                    placeholder="Buscar por ID, título ou descrição" 
                    value="{{ request.args.get('busca', '') }}">
@@ -72,12 +71,26 @@
                 <option value="area" {% if request.args.get('ordenar') == 'area' %}selected{% endif %}>Área</option>
             </select>
         </div>
-        <div class="col-md-3 text-end">
+
+        <!-- ✅ Ajustado: “Somente Destaques” com layout vertical e espaçamento refinado -->
+        <div class="col-md-2 d-flex justify-content-center">
+            <div class="form-check text-center">
+                <input class="form-check-input mb-1" type="checkbox" name="destaque" value="1" 
+                       id="destaque" {% if request.args.get('destaque') == '1' %}checked{% endif %}>
+                <label class="form-check-label fw-semibold d-block" for="destaque" style="line-height: 1.1;">
+                    🌟 Somente<br>Destaques
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-1 text-end">
             <button type="submit" class="btn btn-primary w-100">Filtrar</button>
         </div>
     </form>
 
-    <!-- Listagem -->
+    <!-- ===========================================
+         🏘️ Listagem dos Imóveis
+         =========================================== -->
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
@@ -110,7 +123,9 @@
     </div>
 </div>
 
-<!-- Slider redes sociais -->
+<!-- ===========================================
+     🎞️ Animação: Rolagem automática dos ícones sociais
+     =========================================== -->
 <script>
 const ticker = document.getElementById('socialTicker');
 let scrollPos = 0;
@@ -125,5 +140,8 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
+
+
 
 
