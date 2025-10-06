@@ -17,6 +17,12 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-5 navbar-gradient">
         <div class="container position-relative">
 
+            <!-- 📄 CRECI e Telefone (lado esquerdo, espaçamento maior e cor branca sem sombra) -->
+            <div class="position-absolute start-0 top-50 translate-middle-y ms-3 text-white text-start" style="line-height: 2;">
+                <small style="display:block; font-weight:500; color: #ffffff;">Creci: 52.208</small>
+                <small style="display:block; color: #ffffff;">Cel: (13) 99203-2726</small>
+            </div>
+
             <!-- Logo centralizada -->
             <a class="navbar-brand mx-auto" href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" class="logo-destaque">
@@ -39,7 +45,7 @@
     <!-- Container principal -->
     <div class="container">
 
-        <!-- ✅ Sistema de mensagens de alerta melhorado -->
+        <!-- ✅ Sistema de mensagens de alerta -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -88,6 +94,8 @@
 
 </body>
 </html>
+
+
 
 
 
