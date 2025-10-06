@@ -5,8 +5,6 @@
 # Variáveis de ambiente (segurança)
 .env
 
-# Banco de dados local (mantém privado)
-database.db
 
 # Cache e arquivos temporários
 __pycache__/
