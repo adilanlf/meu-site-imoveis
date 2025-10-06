@@ -2,8 +2,6 @@
 # 🚫 Itens ignorados pelo Git/GitHub
 # ===========================================
 
-# Banco de dados local
-database.db
 
 # Arquivo de variáveis de ambiente (NUNCA subir)
 .env
