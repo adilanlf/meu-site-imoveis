@@ -9,21 +9,25 @@ import sqlite3
 import os
 
 # ===========================================
-# ⚙️ Configurações Iniciais (com .env)
+# ⚙️ Configurações Iniciais
 # ===========================================
-load_dotenv()  # 🔹 Carrega automaticamente variáveis do arquivo .env
+
+
+# Carrega variáveis do arquivo .env automaticamente
+load_dotenv()
 
 app = Flask(__name__)
 
 # 🔐 Segurança: lê do .env ou usa valor padrão se faltar
-app.secret_key = os.getenv("SECRET_KEY", "Teste")
+app.secret_key = os.getenv("SECRET_KEY")
 
 # 🗄️ Banco de dados local (mantém SQLite como está)
 DATABASE = "database.db"
 
 # 👤 Credenciais do painel admin (agora ocultas no .env)
-ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "senha123")
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+
 
 # ===========================================
 # 🔑 Configuração do Flask-Login
