@@ -1,30 +1,40 @@
+# ===========================================
+# 🏠 Celo Imóveis - Aplicação Flask Segura
+# ===========================================
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from datetime import datetime
+from dotenv import load_dotenv  # ✅ Novo: permite usar o arquivo .env
 import sqlite3
 import os
 
 # ===========================================
-# ⚙️ Configurações Iniciais
+# ⚙️ Configurações Iniciais (com .env)
 # ===========================================
-app = Flask(__name__)
-app.secret_key = "sua_chave_secreta"  # pode trocar se quiser
+load_dotenv()  # 🔹 Carrega automaticamente variáveis do arquivo .env
 
-# Caminho do banco local (Render ou máquina local)
+app = Flask(__name__)
+
+# 🔐 Segurança: lê do .env ou usa valor padrão se faltar
+app.secret_key = os.getenv("SECRET_KEY", "chave_local_insegura")
+
+# 🗄️ Banco de dados local (mantém SQLite como está)
 DATABASE = "database.db"
 
-# Credenciais do painel admin
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "senha123")
+# 👤 Credenciais do painel admin (agora ocultas no .env)
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "senha123")
 
-# Flask-Login setup
+# ===========================================
+# 🔑 Configuração do Flask-Login
+# ===========================================
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
 
 # ===========================================
-# 👤 Classe de Usuário (Flask-Login)
+# 👤 Classe de Usuário
 # ===========================================
 class User(UserMixin):
     def __init__(self, id):
@@ -46,7 +56,7 @@ def get_db_connection():
 
 
 # ===========================================
-# 🏠 Rota Home (com busca, filtros e ordenação)
+# 🏠 Página Inicial (com filtros e destaques)
 # ===========================================
 @app.route("/", methods=["GET"])
 def index():
@@ -255,6 +265,7 @@ def delete_imovel(id):
 # ===========================================
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
