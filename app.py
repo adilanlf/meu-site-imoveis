@@ -1,38 +1,31 @@
-# ===========================================
-# 🏠 Celo Imóveis - Aplicação Flask Segura
-# ===========================================
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from datetime import datetime
-from dotenv import load_dotenv  # ✅ Para ler variáveis do arquivo .env
 import sqlite3
 import os
 
 # ===========================================
-# ⚙️ Configurações Iniciais (com .env seguro)
+# ⚙️ Configurações Iniciais
 # ===========================================
-load_dotenv()  # Carrega automaticamente variáveis do .env (local) ou Render (ambiente)
-
 app = Flask(__name__)
+app.secret_key = "sua_chave_secreta"  # pode trocar se quiser
 
-# 🔐 Segurança: obtém variáveis do ambiente (Render ou .env local)
-app.secret_key = os.getenv("SECRET_KEY", "chave_local_insegura")
+# Caminho do banco local (Render ou máquina local)
+DATABASE = "database.db"
 
-# Banco de dados local padrão (SQLite)
-DATABASE = os.getenv("DATABASE_URL", "database.db")
+# Credenciais do painel admin
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "senha123")
 
-# Login e senha do painel admin
-ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "senha123")
-
-# ===========================================
-# 👤 Classe de Usuário (Flask-Login)
-# ===========================================
+# Flask-Login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
 
+# ===========================================
+# 👤 Classe de Usuário (Flask-Login)
+# ===========================================
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
@@ -44,7 +37,7 @@ def load_user(user_id):
 
 
 # ===========================================
-# 🗄️ Conexão e Inicialização do Banco de Dados
+# 🗄️ Conexão com o Banco de Dados
 # ===========================================
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -52,44 +45,20 @@ def get_db_connection():
     return conn
 
 
-def init_db():
-    """🧱 Cria a tabela 'imoveis' se ela ainda não existir."""
-    conn = get_db_connection()
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS imoveis (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT NOT NULL,
-            descricao TEXT,
-            preco TEXT,
-            dormitorios INTEGER,
-            banheiros INTEGER,
-            vagas INTEGER,
-            area TEXT,
-            destaque INTEGER DEFAULT 0,
-            fotos TEXT
-        )
-    """)
-    conn.commit()
-    conn.close()
-
-
 # ===========================================
 # 🏠 Rota Home (com busca, filtros e ordenação)
 # ===========================================
 @app.route("/", methods=["GET"])
 def index():
-    init_db()  # ✅ Garante que a tabela existe antes de usar
-
     conn = get_db_connection()
 
-    # parâmetros da querystring
     busca = request.args.get("busca", "").strip()
     dormitorios = request.args.get("dormitorios", "").strip()
     banheiros = request.args.get("banheiros", "").strip()
     ordenar = request.args.get("ordenar", "").strip()
     destaque = request.args.get("destaque", "").strip()
 
-    # 🔍 Busca direta por ID (#ID)
+    # 🔍 Busca direta por ID
     if busca.startswith("#"):
         id_str = busca.lstrip("#").strip()
         if id_str.isdigit():
@@ -101,7 +70,6 @@ def index():
                 flash(f"Nenhum imóvel encontrado com o ID #{id_str}.", "warning")
                 return redirect(url_for("index"))
 
-    # 🧭 Filtros
     where_clauses = []
     params = []
 
@@ -114,23 +82,20 @@ def index():
 
     if dormitorios:
         try:
-            d_min = int(dormitorios)
             where_clauses.append("COALESCE(CAST(dormitorios AS INTEGER), 0) >= ?")
-            params.append(d_min)
+            params.append(int(dormitorios))
         except ValueError:
             pass
 
     if banheiros:
         try:
-            b_min = int(banheiros)
             where_clauses.append("COALESCE(CAST(banheiros AS INTEGER), 0) >= ?")
-            params.append(b_min)
+            params.append(int(banheiros))
         except ValueError:
             pass
 
     where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
-    # 🔢 Ordenação
     if ordenar == "preco_asc":
         order_sql = "ORDER BY CAST(REPLACE(REPLACE(REPLACE(preco, 'R$', ''), '.', ''), ',', '') AS INTEGER) ASC"
     elif ordenar == "preco_desc":
@@ -149,7 +114,7 @@ def index():
 
 
 # ===========================================
-# 🏘️ Rota Detalhes do Imóvel
+# 🏘️ Detalhes do Imóvel
 # ===========================================
 @app.route("/imovel/<int:id>")
 def detalhes(id):
@@ -289,8 +254,8 @@ def delete_imovel(id):
 # 🚀 Inicialização
 # ===========================================
 if __name__ == "__main__":
-    init_db()  # ✅ Garante que o banco exista ao iniciar
     app.run(debug=True)
+
 
 
 
