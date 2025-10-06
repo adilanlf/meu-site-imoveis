@@ -44,7 +44,7 @@ def load_user(user_id):
 
 
 # ===========================================
-# 🗄️ Conexão com o Banco de Dados
+# 🗄️ Conexão e Inicialização do Banco de Dados
 # ===========================================
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -52,12 +52,34 @@ def get_db_connection():
     return conn
 
 
+def init_db():
+    """🧱 Cria a tabela 'imoveis' se ela ainda não existir."""
+    conn = get_db_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS imoveis (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT NOT NULL,
+            descricao TEXT,
+            preco TEXT,
+            dormitorios INTEGER,
+            banheiros INTEGER,
+            vagas INTEGER,
+            area TEXT,
+            destaque INTEGER DEFAULT 0,
+            fotos TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
 # ===========================================
 # 🏠 Rota Home (com busca, filtros e ordenação)
-# ✅ Inclui busca por #ID e filtro “Somente Destaques”
 # ===========================================
 @app.route("/", methods=["GET"])
 def index():
+    init_db()  # ✅ Garante que a tabela existe antes de usar
+
     conn = get_db_connection()
 
     # parâmetros da querystring
@@ -65,7 +87,7 @@ def index():
     dormitorios = request.args.get("dormitorios", "").strip()
     banheiros = request.args.get("banheiros", "").strip()
     ordenar = request.args.get("ordenar", "").strip()
-    destaque = request.args.get("destaque", "").strip()  # 🌟 filtro novo
+    destaque = request.args.get("destaque", "").strip()
 
     # 🔍 Busca direta por ID (#ID)
     if busca.startswith("#"):
@@ -79,20 +101,17 @@ def index():
                 flash(f"Nenhum imóvel encontrado com o ID #{id_str}.", "warning")
                 return redirect(url_for("index"))
 
-    # 🧭 Filtros normais
+    # 🧭 Filtros
     where_clauses = []
     params = []
 
-    # busca por título/descrição
     if busca:
         where_clauses.append("(titulo LIKE ? OR descricao LIKE ?)")
         params.extend([f"%{busca}%", f"%{busca}%"])
 
-    # filtro: somente destaques
     if destaque == "1":
         where_clauses.append("destaque = 1")
 
-    # filtros numéricos
     if dormitorios:
         try:
             d_min = int(dormitorios)
@@ -111,7 +130,7 @@ def index():
 
     where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
-    # ordenação
+    # 🔢 Ordenação
     if ordenar == "preco_asc":
         order_sql = "ORDER BY CAST(REPLACE(REPLACE(REPLACE(preco, 'R$', ''), '.', ''), ',', '') AS INTEGER) ASC"
     elif ordenar == "preco_desc":
@@ -270,7 +289,9 @@ def delete_imovel(id):
 # 🚀 Inicialização
 # ===========================================
 if __name__ == "__main__":
+    init_db()  # ✅ Garante que o banco exista ao iniciar
     app.run(debug=True)
+
 
 
 
