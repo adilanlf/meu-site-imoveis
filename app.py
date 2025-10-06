@@ -1,14 +1,17 @@
+# ===========================================
+# 🏠 Celo Imóveis - Aplicação Flask Segura
+# ===========================================
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from datetime import datetime
-from dotenv import load_dotenv  # ✅ Novo: para ler variáveis do arquivo .env
+from dotenv import load_dotenv  # ✅ Para ler variáveis do arquivo .env
 import sqlite3
 import os
 
 # ===========================================
 # ⚙️ Configurações Iniciais (com .env seguro)
 # ===========================================
-load_dotenv()  # Carrega variáveis do arquivo .env automaticamente
+load_dotenv()  # Carrega automaticamente variáveis do .env (local) ou Render (ambiente)
 
 app = Flask(__name__)
 
@@ -22,21 +25,23 @@ DATABASE = os.getenv("DATABASE_URL", "database.db")
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "senha123")
 
-# Flask-Login setup
+# ===========================================
+# 👤 Classe de Usuário (Flask-Login)
+# ===========================================
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-# ===========================================
-# 👤 Classe de Usuário (Flask-Login)
-# ===========================================
+
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
+
 
 # ===========================================
 # 🗄️ Conexão com o Banco de Dados
@@ -266,6 +271,7 @@ def delete_imovel(id):
 # ===========================================
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
