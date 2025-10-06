@@ -5,7 +5,7 @@
 # Banco de dados local
 database.db
 
-# Arquivo de variáveis de ambiente
+# Arquivo de variáveis de ambiente (NUNCA subir)
 .env
 
 # Cache e arquivos temporários
@@ -14,11 +14,18 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Ambientes virtuais
+# Ambientes virtuais locais
 venv/
+env/
 imoveis/
 
 # Logs e backups
 *.log
 *.bak
 *.tmp
+
+# Arquivos de sistema e editores
+.DS_Store
+.vscode/
+.idea/
+
