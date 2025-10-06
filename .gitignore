@@ -2,26 +2,24 @@
 # 🚫 Itens ignorados pelo Git/GitHub
 # ===========================================
 
-# 🧹 Cache e arquivos temporários do Python
+# Variáveis de ambiente (segurança)
+.env
+
+# Banco de dados local (mantém privado)
+database.db
+
+# Cache e arquivos temporários
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# 🧱 Ambientes virtuais locais (venv, imoveis)
+# Ambientes virtuais
 venv/
 imoveis/
 
-# 🧾 Logs e backups
+# Logs e backups
 *.log
 *.bak
 *.tmp
-*.swp
 
-# ⚙️ Configurações locais e do sistema
-.vscode/
-.DS_Store
-Thumbs.db
-
-# 📦 Arquivos opcionais (caso volte a usar .env futuramente)
-# .env

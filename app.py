@@ -16,7 +16,7 @@ load_dotenv()  # 🔹 Carrega automaticamente variáveis do arquivo .env
 app = Flask(__name__)
 
 # 🔐 Segurança: lê do .env ou usa valor padrão se faltar
-app.secret_key = os.getenv("SECRET_KEY", "chave_local_insegura")
+app.secret_key = os.getenv("SECRET_KEY", "Teste")
 
 # 🗄️ Banco de dados local (mantém SQLite como está)
 DATABASE = "database.db"
