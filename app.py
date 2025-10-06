@@ -1,24 +1,31 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
+from datetime import datetime
+from dotenv import load_dotenv  # ✅ Novo: para ler variáveis do arquivo .env
 import sqlite3
 import os
-from datetime import datetime  # ✅ Import adicionado
 
 # ===========================================
-# ⚙️ Configurações Iniciais
+# ⚙️ Configurações Iniciais (com .env seguro)
 # ===========================================
+load_dotenv()  # Carrega variáveis do arquivo .env automaticamente
+
 app = Flask(__name__)
-app.secret_key = "sua_chave_secreta"  # Alterar para algo seguro
 
+# 🔐 Segurança: obtém variáveis do ambiente (Render ou .env local)
+app.secret_key = os.getenv("SECRET_KEY", "chave_local_insegura")
+
+# Banco de dados local padrão (SQLite)
+DATABASE = os.getenv("DATABASE_URL", "database.db")
+
+# Login e senha do painel admin
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "senha123")
+
+# Flask-Login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
-
-DATABASE = "database.db"
-
-# Usuário Admin
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "senha123")
 
 # ===========================================
 # 👤 Classe de Usuário (Flask-Login)
@@ -42,7 +49,7 @@ def get_db_connection():
 
 # ===========================================
 # 🏠 Rota Home (com busca, filtros e ordenação)
-# ✅ Adicionado suporte à busca direta por #ID e filtro “Somente Destaques”
+# ✅ Inclui busca por #ID e filtro “Somente Destaques”
 # ===========================================
 @app.route("/", methods=["GET"])
 def index():
@@ -53,7 +60,7 @@ def index():
     dormitorios = request.args.get("dormitorios", "").strip()
     banheiros = request.args.get("banheiros", "").strip()
     ordenar = request.args.get("ordenar", "").strip()
-    destaque = request.args.get("destaque", "").strip()  # 🌟 novo filtro
+    destaque = request.args.get("destaque", "").strip()  # 🌟 filtro novo
 
     # 🔍 Busca direta por ID (#ID)
     if busca.startswith("#"):
@@ -71,7 +78,7 @@ def index():
     where_clauses = []
     params = []
 
-    # busca por título ou descrição
+    # busca por título/descrição
     if busca:
         where_clauses.append("(titulo LIKE ? OR descricao LIKE ?)")
         params.extend([f"%{busca}%", f"%{busca}%"])
@@ -254,8 +261,12 @@ def delete_imovel(id):
     return redirect(url_for("admin"))
 
 
+# ===========================================
+# 🚀 Inicialização
+# ===========================================
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
