@@ -1,14 +1,29 @@
 # gerenciador_imoveis_avancado.py
 import sqlite3
+import sys  # necessário para encerrar o programa
 
 DATABASE = "database.db"
 
+# ==============================
+# 🔧 Conexão com o Banco
+# ==============================
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
-# ---------- Utilidades ----------
+# ==============================
+# ⚙️ Funções Utilitárias
+# ==============================
+def safe_input(prompt):
+    """
+    Input seguro — digite 'quit' para encerrar o programa a qualquer momento.
+    """
+    valor = input(prompt)
+    if valor.strip().lower() == "quit":
+        print("\n🚪 Saindo do gerenciador de imóveis...\n")
+        sys.exit()
+    return valor
 
 def has_column(conn, table, column):
     rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
@@ -29,13 +44,16 @@ def input_multilinha(prompt):
     linhas = []
     while True:
         linha = input()
+        if linha.strip().lower() == "quit":
+            print("\n🚪 Saindo do gerenciador de imóveis...\n")
+            sys.exit()
         if linha.strip().lower() == "fim":
             break
         linhas.append(linha)
     return "\n".join(linhas)
 
 # ==============================
-# LISTAR IMÓVEIS (detalhes)
+# 📋 Listar Imóveis
 # ==============================
 def listar_imoveis(conn):
     imoveis = conn.execute("SELECT * FROM imoveis ORDER BY id").fetchall()
@@ -51,7 +69,7 @@ def listar_imoveis(conn):
         print(f"Título: {imovel['titulo']}")
         print(f"Descrição curta: {imovel['descricao']}")
         if tem_html:
-            tem = "Sim" if (imovel['descricao_html'] or "").strip() else "Não"
+            tem = "Sim" if (imovel['descricao_html'] or '').strip() else "Não"
             print(f"Descrição rica (descricao_html): {tem}")
         print(f"Preço: {imovel['preco']}")
         print(f"Dormitórios: {imovel['dormitorios']}")
@@ -72,49 +90,32 @@ def listar_imoveis(conn):
     return imoveis
 
 # ==============================
-# ADICIONAR IMÓVEL
+# ➕ Adicionar Imóvel
 # ==============================
 def adicionar_imovel(conn):
     print("\n=== Adicionar Imóvel ===")
-    titulo = input("Título: ")
-    if titulo.lower() == "quit": return
-
-    descricao = input("Descrição curta (resumo): ")
-    if descricao.lower() == "quit": return
+    titulo = safe_input("Título: ")
+    descricao = safe_input("Descrição curta (resumo): ")
 
     tem_html = has_column(conn, "imoveis", "descricao_html")
     descricao_html = ""
     if tem_html:
         descricao_html = input_multilinha("\nAgora cole a descrição completa com formatação (emojis, <br>, etc).")
 
-    preco = input("Preço (ex: R$ 250.000): ")
-    if preco.lower() == "quit": return
-
-    dormitorios = input("Dormitórios: ")
-    if dormitorios.lower() == "quit": return
-
-    banheiros = input("Banheiros: ")
-    if banheiros.lower() == "quit": return
-
-    vagas = input("Vagas: ")
-    if vagas.lower() == "quit": return
-
-    area = input("Área (m²): ")
-    if area.lower() == "quit": return
-
-    destaque = input("Destaque? (s/n): ").lower()
-    if destaque == "quit": return
+    preco = safe_input("Preço (ex: R$ 250.000): ")
+    dormitorios = safe_input("Dormitórios: ")
+    banheiros = safe_input("Banheiros: ")
+    vagas = safe_input("Vagas: ")
+    area = safe_input("Área (m²): ")
+    destaque = safe_input("Destaque? (s/n): ").lower()
     destaque_val = 1 if destaque == "s" else 0
+    fotos = safe_input("Nomes das fotos (separados por vírgula, ex: casa1.jpg,casa2.jpg): ")
 
-    fotos = input("Nomes das fotos (separados por vírgula, ex: casa1.jpg,casa2.jpg): ")
-    if fotos.lower() == "quit": return
-
-    # Monta INSERT dinamicamente conforme existência de descricao_html
     cols = ["titulo", "descricao", "preco", "dormitorios", "banheiros", "vagas", "area", "destaque", "fotos"]
     vals = [titulo, descricao, preco, dormitorios, banheiros, vagas, area, destaque_val, fotos]
 
     if tem_html:
-        cols.insert(2, "descricao_html")  # após descricao
+        cols.insert(2, "descricao_html")
         vals.insert(2, descricao_html)
 
     placeholders = ",".join(["?"] * len(cols))
@@ -124,16 +125,14 @@ def adicionar_imovel(conn):
     print("✅ Imóvel adicionado com sucesso!\n")
 
 # ==============================
-# EDITAR IMÓVEL
+# ✏️ Editar Imóvel
 # ==============================
 def editar_imovel(conn):
     print("\n=== Editar Imóvel ===")
     imoveis = listar_imoveis(conn)
     if not imoveis: return
 
-    id_escolhido = input("Digite o ID do imóvel ou 'quit' para sair: ")
-    if id_escolhido.lower() == "quit": return
-
+    id_escolhido = safe_input("Digite o ID do imóvel: ")
     imovel = conn.execute("SELECT * FROM imoveis WHERE id=?", (id_escolhido,)).fetchone()
     if not imovel:
         print("❌ Imóvel não encontrado.\n")
@@ -142,80 +141,56 @@ def editar_imovel(conn):
     tem_html = has_column(conn, "imoveis", "descricao_html")
 
     print("\nDeixe em branco para manter o valor atual.")
-    titulo = input(f"Título [{imovel['titulo']}]: ") or imovel['titulo']
-    if titulo.lower() == "quit": return
-
-    descricao = input(f"Descrição curta [{imovel['descricao']}]: ") or imovel['descricao']
-    if descricao.lower() == "quit": return
+    titulo = safe_input(f"Título [{imovel['titulo']}]: ") or imovel['titulo']
+    descricao = safe_input(f"Descrição curta [{imovel['descricao']}]: ") or imovel['descricao']
 
     if tem_html:
         print("Atualizar descrição completa (descricao_html)? (s/n)")
-        if input().strip().lower() == "s":
+        if safe_input("").strip().lower() == "s":
             descricao_html = input_multilinha("Cole o novo texto (digite 'fim' para encerrar):")
         else:
             descricao_html = imovel['descricao_html']
     else:
-        descricao_html = None  # não existe a coluna
+        descricao_html = None
 
-    preco = input(f"Preço [{imovel['preco']}]: ") or imovel['preco']
-    if preco.lower() == "quit": return
-
-    dormitorios = input(f"Dormitórios [{imovel['dormitorios']}]: ") or imovel['dormitorios']
-    if str(dormitorios).lower() == "quit": return
-
-    banheiros = input(f"Banheiros [{imovel['banheiros']}]: ") or imovel['banheiros']
-    if str(banheiros).lower() == "quit": return
-
-    vagas = input(f"Vagas [{imovel['vagas']}]: ") or imovel['vagas']
-    if str(vagas).lower() == "quit": return
-
-    area = input(f"Área [{imovel['area']}]: ") or imovel['area']
-    if str(area).lower() == "quit": return
-
-    destaque = input(f"Destaque (s/n) [{'s' if imovel['destaque'] else 'n'}]: ").lower()
-    if destaque == "quit": return
+    preco = safe_input(f"Preço [{imovel['preco']}]: ") or imovel['preco']
+    dormitorios = safe_input(f"Dormitórios [{imovel['dormitorios']}]: ") or imovel['dormitorios']
+    banheiros = safe_input(f"Banheiros [{imovel['banheiros']}]: ") or imovel['banheiros']
+    vagas = safe_input(f"Vagas [{imovel['vagas']}]: ") or imovel['vagas']
+    area = safe_input(f"Área [{imovel['area']}]: ") or imovel['area']
+    destaque = safe_input(f"Destaque (s/n) [{'s' if imovel['destaque'] else 'n'}]: ").lower()
     destaque_val = 1 if destaque == "s" else 0
+    novas_fotos = safe_input("Fotos (deixe vazio para manter as atuais): ").strip()
+    fotos_final = novas_fotos if novas_fotos else imovel['fotos']
 
-    # Fotos: aqui mantemos as atuais por padrão. Para adicionar/remover use o menu "Gerenciar fotos".
-    novas_fotos = input("Fotos (deixe vazio para manter as atuais) [atual: mantém]: ").strip()
-    if novas_fotos:
-        fotos_final = novas_fotos
-    else:
-        fotos_final = imovel['fotos']
-
-    # Monta UPDATE dinâmico
     sets = ["titulo=?", "descricao=?", "preco=?", "dormitorios=?", "banheiros=?", "vagas=?", "area=?", "destaque=?", "fotos=?"]
     vals = [titulo, descricao, preco, dormitorios, banheiros, vagas, area, destaque_val, fotos_final]
 
     if tem_html:
-        sets.insert(2, "descricao_html=?")  # após descricao
+        sets.insert(2, "descricao_html=?")
         vals.insert(2, descricao_html)
 
     sql = f"UPDATE imoveis SET {', '.join(sets)} WHERE id=?"
     vals.append(id_escolhido)
-
     conn.execute(sql, vals)
     conn.commit()
     print("✅ Imóvel atualizado com sucesso!\n")
 
 # ==============================
-# ATUALIZAR / REMOVER FOTOS
+# 🖼️ Gerenciar Fotos
 # ==============================
 def gerenciar_fotos(conn):
     print("\n=== Atualizar / Remover Fotos ===")
     imoveis = listar_imoveis(conn)
     if not imoveis: return
 
-    id_escolhido = input("Digite o ID do imóvel ou 'quit' para sair: ")
-    if id_escolhido.lower() == "quit": return
-
+    id_escolhido = safe_input("Digite o ID do imóvel: ")
     imovel = conn.execute("SELECT * FROM imoveis WHERE id=?", (id_escolhido,)).fetchone()
     if not imovel:
         print("❌ Imóvel não encontrado.\n")
         return
 
     fotos = parse_fotos(imovel["fotos"])
-
     print("\nFotos atuais:")
     if fotos:
         for idx, foto in enumerate(fotos, start=1):
@@ -226,10 +201,10 @@ def gerenciar_fotos(conn):
     print("\n1. Adicionar novas fotos")
     print("2. Remover foto(s) existente(s)")
     print("0. Cancelar")
-    escolha = input("Escolha uma opção: ")
+    escolha = safe_input("Escolha uma opção: ")
 
     if escolha == "1":
-        novas = input("Digite os nomes das novas fotos (separados por vírgula): ")
+        novas = safe_input("Digite os nomes das novas fotos (separados por vírgula): ")
         for f in parse_fotos(novas):
             if f not in fotos:
                 fotos.append(f)
@@ -238,11 +213,9 @@ def gerenciar_fotos(conn):
         if not fotos:
             print("Não há fotos para remover.")
             return
-        alvos = input("Digite o(s) número(s) da(s) foto(s) para remover (ex: 1,3,4) ou 'quit': ")
-        if alvos.lower() == "quit":
-            return
+        alvos = safe_input("Digite o(s) número(s) da(s) foto(s) para remover (ex: 1,3,4): ")
         try:
-            indices = sorted({int(n.strip()) for n in alvos.split(",") if n.strip()}, reverse=True)
+            indices = sorted({int(n.strip()) for n in alvos.split(',') if n.strip()}, reverse=True)
             for idx in indices:
                 if 1 <= idx <= len(fotos):
                     fotos.pop(idx - 1)
@@ -259,22 +232,20 @@ def gerenciar_fotos(conn):
     print("✅ Fotos atualizadas com sucesso!\n")
 
 # ==============================
-# DELETAR IMÓVEL
+# ❌ Deletar Imóvel
 # ==============================
 def deletar_imovel(conn):
     print("\n=== Deletar Imóvel ===")
     imoveis = listar_imoveis(conn)
     if not imoveis: return
 
-    id_escolhido = input("Digite o ID do imóvel ou 'quit' para sair: ")
-    if id_escolhido.lower() == "quit": return
-
+    id_escolhido = safe_input("Digite o ID do imóvel: ")
     imovel = conn.execute("SELECT * FROM imoveis WHERE id=?", (id_escolhido,)).fetchone()
     if not imovel:
         print("❌ Imóvel não encontrado.\n")
         return
 
-    confirm = input(f"Tem certeza que deseja deletar o imóvel {imovel['id']} - {imovel['titulo']}? (s/n): ")
+    confirm = safe_input(f"Tem certeza que deseja deletar o imóvel {imovel['id']} - {imovel['titulo']}? (s/n): ")
     if confirm.lower() == "s":
         conn.execute("DELETE FROM imoveis WHERE id=?", (id_escolhido,))
         conn.commit()
@@ -283,20 +254,20 @@ def deletar_imovel(conn):
         print("Operação cancelada.\n")
 
 # ==============================
-# MENU PRINCIPAL
+# 🏠 Menu Principal
 # ==============================
 def main():
     conn = get_db_connection()
-    print("💡 Dica: para habilitar descrição rica, rode antes: python upgrade_db.py")
+    print("💡 Dica: digite 'quit' em qualquer momento para sair do sistema.")
     while True:
         print("\n=== GERENCIADOR AVANÇADO DE IMÓVEIS ===")
         print("1. Listar imóveis (detalhes completos)")
         print("2. Adicionar imóvel")
         print("3. Editar imóvel")
-        print("4. Atualizar / Remover fotos")   # <- mantido
+        print("4. Atualizar / Remover fotos")
         print("5. Deletar imóvel")
         print("0. Sair")
-        escolha = input("Escolha uma opção: ")
+        escolha = safe_input("Escolha uma opção: ")
 
         if escolha == "1":
             listar_imoveis(conn)
@@ -318,4 +289,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
