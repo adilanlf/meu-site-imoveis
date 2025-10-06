@@ -2,22 +2,29 @@
 # 🚫 Itens ignorados pelo Git/GitHub
 # ===========================================
 
-# Variáveis de ambiente (segurança)
+# Variáveis de ambiente
 .env
+*.env
 
-
-# Cache e arquivos temporários
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
 
 # Ambientes virtuais
 venv/
 imoveis/
 
-# Logs e backups
+# Cache e temporários
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 *.log
+
+# Arquivos do VS Code
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Backups
 *.bak
 *.tmp
-
