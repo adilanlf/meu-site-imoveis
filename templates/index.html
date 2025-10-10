@@ -38,9 +38,7 @@
     <!-- Título -->
     <h2 class="mb-4">Imóveis Disponíveis</h2>
 
-    <!-- ===========================================
-         🧭 Filtros de Busca (inclui filtro “Somente Destaques”)
-         =========================================== -->
+    <!-- 🧭 Filtros -->
     <form method="GET" action="{{ url_for('index') }}" class="row g-3 mb-4 p-3 bg-white shadow-sm rounded align-items-center">
         <div class="col-md-3">
             <input type="text" name="busca" class="form-control" 
@@ -72,7 +70,6 @@
             </select>
         </div>
 
-        <!-- ✅ Ajustado: “Somente Destaques” com layout vertical e espaçamento refinado -->
         <div class="col-md-2 d-flex justify-content-center">
             <div class="form-check text-center">
                 <input class="form-check-input mb-1" type="checkbox" name="destaque" value="1" 
@@ -88,29 +85,30 @@
         </div>
     </form>
 
-    <!-- ===========================================
-         🏘️ Listagem dos Imóveis
-         =========================================== -->
+    <!-- 🏘️ Listagem -->
     <div class="row g-4">
         {% for imovel in imoveis %}
         <div class="col-md-4 col-sm-6 animate-fade delay-{{ loop.index }}">
             <div class="card card-hover shadow-lg h-100 border-0">
-                {% set fotos = imovel['fotos'].split(',') if imovel['fotos'] else [] %}
-                {% if fotos %}
-                    <img src="{{ url_for('static', filename='uploads/' + fotos[0]) }}" 
-                         class="card-img-top" alt="Foto do imóvel">
+                {% set primeira_foto = imovel['fotos'].split(',')[0] if imovel['fotos'] else None %}
+                {% if primeira_foto %}
+                    {% if primeira_foto.startswith('http') %}
+                        <img src="{{ primeira_foto }}" class="card-img-top" alt="Foto do imóvel">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + primeira_foto) }}" class="card-img-top" alt="Foto do imóvel">
+                    {% endif %}
                 {% else %}
-                    <img src="{{ url_for('static', filename='no-image.jpg') }}" 
-                         class="card-img-top" alt="Sem foto">
+                    <img src="{{ url_for('static', filename='no-image.jpg') }}" class="card-img-top" alt="Sem foto">
                 {% endif %}
+
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ imovel['titulo'] }}</h5>
                     <p class="text-success fw-bold fs-5 price-hover">{{ imovel['preco'] }}</p>
                     <div class="d-flex flex-wrap mb-3 small text-muted">
-                        <span class="me-3" title="Dormitórios">🛏 {{ imovel['dormitorios'] }}</span>
-                        <span class="me-3" title="Banheiros">🛁 {{ imovel['banheiros'] }}</span>
-                        <span class="me-3" title="Vagas">🚗 {{ imovel['vagas'] }}</span>
-                        <span class="me-3" title="Área">📐 {{ imovel['area'] }} m²</span>
+                        <span class="me-3">🛏 {{ imovel['dormitorios'] }}</span>
+                        <span class="me-3">🛁 {{ imovel['banheiros'] }}</span>
+                        <span class="me-3">🚗 {{ imovel['vagas'] }}</span>
+                        <span class="me-3">📐 {{ imovel['area'] }} m²</span>
                     </div>
                     {% if imovel['destaque'] %}
                         <span class="badge bg-warning text-dark mb-2 badge-highlight">⭐ Destaque</span>
@@ -123,9 +121,7 @@
     </div>
 </div>
 
-<!-- ===========================================
-     🎞️ Animação: Rolagem automática dos ícones sociais
-     =========================================== -->
+<!-- 🎞️ Animação social -->
 <script>
 const ticker = document.getElementById('socialTicker');
 let scrollPos = 0;
@@ -140,6 +136,7 @@ function moveTicker() {
 moveTicker();
 </script>
 {% endblock %}
+
 
 
 
