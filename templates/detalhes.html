@@ -141,16 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
         if (e.target === lightbox) closeLightbox();
     });
 
+    // ✅ Correção: Atualiza o índice mesmo com zoom puxado
     btnPrev.addEventListener("click", (e) => {
         e.stopPropagation();
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        openLightbox(currentIndex);
+        lightboxImg.src = images[currentIndex].src;
+        caption.textContent = `${currentIndex + 1} de ${images.length}`;
+        resetTransform();
     });
 
     btnNext.addEventListener("click", (e) => {
         e.stopPropagation();
         currentIndex = (currentIndex + 1) % images.length;
-        openLightbox(currentIndex);
+        lightboxImg.src = images[currentIndex].src;
+        caption.textContent = `${currentIndex + 1} de ${images.length}`;
+        resetTransform();
     });
 
     // 🔍 Zoom + Pan + Cursor de mão
@@ -312,6 +317,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 {% endblock %}
+
 
 
 
