@@ -29,6 +29,7 @@
                         {% endfor %}
                     </div>
 
+                    <!-- 🔼 Controles -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselImovel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
                     </button>
@@ -36,6 +37,7 @@
                         <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
                     </button>
 
+                    <!-- 📸 Contador -->
                     <div id="photo-counter" class="carousel-counter" data-total="{{ fotos|length }}">
                         1 de {{ fotos|length }}
                     </div>
@@ -58,10 +60,12 @@
                     <h4 class="fw-bold text-success mb-3">{{ imovel['preco'] }}</h4>
 
                     <div class="d-grid gap-2">
-                        <a href="https://wa.me/5513991985274?text={{ ('Olá, tenho interesse no imóvel ' + imovel['titulo']) | urlencode }}" target="_blank" class="btn btn-success btn-lg">
+                        <a href="https://wa.me/5513991985274?text={{ ('Olá, tenho interesse no imóvel ' + imovel['titulo']) | urlencode }}"
+                           target="_blank" class="btn btn-success btn-lg">
                             📞 Contatar via WhatsApp
                         </a>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=adilan_lost@hotmail.com&su={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}&body={{ ('Olá, tudo bem? Tenho interesse no imóvel ' + imovel['titulo'] + '. Poderia me passar mais detalhes, por favor?') | urlencode }}" target="_blank" class="btn btn-outline-primary btn-lg">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=adilan_lost@hotmail.com&su={{ ('Interesse no imóvel ' + imovel['titulo']) | urlencode }}&body={{ ('Olá, tudo bem? Tenho interesse no imóvel ' + imovel['titulo'] + '. Poderia me passar mais detalhes, por favor?') | urlencode }}"
+                           target="_blank" class="btn btn-outline-primary btn-lg">
                             ✉ Enviar E-mail
                         </a>
                     </div>
@@ -74,14 +78,24 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const carousel = document.querySelector('#carouselImovel');
+    // ✅ Instancia o carrossel Bootstrap logo no início (corrige bug da 1ª imagem)
+    const carouselElement = document.querySelector('#carouselImovel');
+    let carousel = null;
+    if (carouselElement) {
+        carousel = bootstrap.Carousel.getOrCreateInstance(carouselElement, {
+            interval: false,
+            ride: false,
+            wrap: true
+        });
+    }
+
     const counter = document.querySelector('#photo-counter');
     const total = counter.dataset.total;
     let currentIndex = 0;
 
     // ✅ Atualiza contador
-    if (carousel && counter) {
-        carousel.addEventListener('slid.bs.carousel', function (event) {
+    if (carouselElement && counter) {
+        carouselElement.addEventListener('slid.bs.carousel', function (event) {
             const index = event.to + 1;
             currentIndex = event.to;
             counter.textContent = `${index} de ${total}`;
@@ -131,9 +145,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function closeLightbox() {
         lightbox.classList.remove("active");
-        // 🔄 Ao fechar, atualiza o carrossel para a foto atual do zoom
-        const bsCarousel = bootstrap.Carousel.getInstance(carousel);
-        bsCarousel.to(currentIndex);
+        // 🔄 Ao fechar, atualiza o carrossel para a foto atual (corrigido)
+        if (carousel) {
+            carousel.to(currentIndex);
+        }
     }
 
     btnClose.addEventListener("click", closeLightbox);
@@ -141,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (e.target === lightbox) closeLightbox();
     });
 
-    // ✅ Correção: Atualiza o índice mesmo com zoom puxado
+    // ✅ Atualiza o índice também dentro do zoom
     btnPrev.addEventListener("click", (e) => {
         e.stopPropagation();
         currentIndex = (currentIndex - 1 + images.length) % images.length;
@@ -272,9 +287,7 @@ document.addEventListener("DOMContentLoaded", function() {
     user-select: none;
     touch-action: none;
 }
-#lightbox img.dragging {
-    cursor: grabbing;
-}
+#lightbox img.dragging { cursor: grabbing; }
 
 /* Botões */
 #lightbox button {
@@ -317,6 +330,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 {% endblock %}
+
 
 
 
