@@ -327,3 +327,17 @@ h2 {
     }
 }
 
+/* 🔧 Corrige desalinhamento entre cards de imóveis */
+.card-title {
+    min-height: 48px; /* define altura mínima do título */
+    display: flex;
+    align-items: center;
+}
+
+/* Mantém o botão e destaque sempre alinhados */
+.property-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
