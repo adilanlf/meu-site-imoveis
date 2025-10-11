@@ -4,52 +4,118 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sem conexão - Celo Imóveis</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
   <style>
     body {
       background: linear-gradient(135deg, #0d6efd, #6610f2);
-      color: white;
+      color: #fff;
       text-align: center;
-      font-family: Arial, sans-serif;
+      font-family: "Poppins", Arial, sans-serif;
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       margin: 0;
+      overflow: hidden;
     }
-    img {
+
+    /* Logo */
+    .logo {
       width: 120px;
       margin-bottom: 20px;
+      animation: pulse 3s infinite ease-in-out;
     }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.85; }
+    }
+
+    /* Ícone Wi-Fi */
+    .wifi {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      margin-bottom: 25px;
+    }
+
+    .wifi::before, .wifi::after {
+      content: "";
+      position: absolute;
+      border: 5px solid white;
+      border-radius: 50%;
+      animation: waves 2s infinite ease-in-out;
+    }
+
+    .wifi::before {
+      top: 10px; left: 10px;
+      width: 50px; height: 50px;
+      opacity: 0.7;
+    }
+
+    .wifi::after {
+      top: 0; left: 0;
+      width: 70px; height: 70px;
+      opacity: 0.3;
+      animation-delay: 1s;
+    }
+
+    @keyframes waves {
+      0% { transform: scale(0.7); opacity: 0.6; }
+      50% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.7); opacity: 0.6; }
+    }
+
+    /* Texto */
     h1 {
       font-size: 1.8rem;
+      font-weight: 600;
       margin-bottom: 10px;
     }
+
     p {
       font-size: 1rem;
       opacity: 0.9;
+      max-width: 320px;
+      margin: 0 auto 20px;
     }
+
+    /* Botão */
     button {
-      margin-top: 25px;
-      background: white;
+      margin-top: 10px;
+      background: #fff;
       color: #0d6efd;
       border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
+      padding: 12px 25px;
+      border-radius: 30px;
       font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
       transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
     }
+
     button:hover {
-      background: #e0e0e0;
+      background: #f1f1f1;
+      transform: translateY(-2px);
+    }
+
+    /* Marca d'água */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8rem;
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis">
+  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis" class="logo">
+  <div class="wifi"></div>
   <h1>Você está sem conexão 📴</h1>
-  <p>Mas não se preocupe! Assim que sua internet voltar, o site recarrega automaticamente.</p>
+  <p>Assim que a internet voltar, o site será atualizado automaticamente.</p>
   <button onclick="window.location.reload()">🔄 Tentar novamente</button>
+  <div class="footer">&copy; {{ current_year }} Celo Imóveis</div>
 </body>
 </html>
+
