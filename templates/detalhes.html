@@ -8,9 +8,9 @@
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
 
-            <!-- 🖼️ Carrossel -->
+            <!-- 🖼️ Carrossel sem autoplay -->
             <div class="col-md-7 position-relative">
-                <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
+                <div id="carouselImovel" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
                     <div class="carousel-inner">
                         {% for foto in fotos %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const counter = document.querySelector('#photo-counter');
     const total = counter.dataset.total;
 
+    // ✅ Atualiza contador
     if (carousel && counter) {
         carousel.addEventListener('slid.bs.carousel', function (event) {
             const index = event.to + 1;
@@ -93,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const lightboxImg = document.createElement("img");
     lightbox.appendChild(lightboxImg);
 
-    // ❌ Botão de Fechar
     const btnClose = document.createElement("button");
     btnClose.id = "lightbox-close";
     btnClose.innerHTML = "&times;";
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
         openLightbox((currentIndex + 1) % images.length);
     });
 
-    // 🔍 Zoom + Pan
+    // 🔍 Zoom + Pan + Cursor de mão
     let scale = 1, lastScale = 1;
     let posX = 0, posY = 0;
     let isDragging = false;
@@ -170,14 +170,18 @@ document.addEventListener("DOMContentLoaded", function() {
         applyTransform();
     });
 
-    // Pan via mouse
+    // Pan via mouse com mão aberta/fechada
     lightboxImg.addEventListener("mousedown", e => {
         e.preventDefault();
         isDragging = true;
+        lightboxImg.classList.add("dragging"); // muda o cursor
         startX = e.clientX - posX;
         startY = e.clientY - posY;
     });
-    document.addEventListener("mouseup", () => isDragging = false);
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        lightboxImg.classList.remove("dragging");
+    });
     document.addEventListener("mousemove", e => {
         if (!isDragging) return;
         posX = e.clientX - startX;
@@ -253,6 +257,9 @@ document.addEventListener("DOMContentLoaded", function() {
     user-select: none;
     touch-action: none;
 }
+#lightbox img.dragging {
+    cursor: grabbing; /* 🖐️ mão fechada durante arrasto */
+}
 
 /* Botões */
 #lightbox button {
@@ -295,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 {% endblock %}
+
 
 
 
