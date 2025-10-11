@@ -15,9 +15,9 @@
                         {% for foto in fotos %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
                             {% if foto.startswith('http') %}
-                                <img src="{{ foto }}" class="d-block w-100 zoomable" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
+                                <img src="{{ foto }}" class="d-block w-100" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
                             {% else %}
-                                <img src="{{ url_for('static', filename='uploads/' + foto) }}" class="d-block w-100 zoomable" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
+                                <img src="{{ url_for('static', filename='uploads/' + foto) }}" class="d-block w-100" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
                             {% endif %}
                         </div>
                         {% endfor %}
@@ -75,28 +75,19 @@
 document.addEventListener("DOMContentLoaded", function() {
     const carousel = document.querySelector('#carouselImovel');
     const counter = document.querySelector('#photo-counter');
-    const total = counter.dataset.total;
+    const total = counter.dataset.total; // ✅ lê o total direto do atributo
 
     if (carousel && counter) {
         carousel.addEventListener('slid.bs.carousel', function (event) {
             const index = event.to + 1;
-            counter.textContent = `${index} de ${total}`;
+            counter.textContent = `${index} / ${total}`;
         });
     }
-
-    // 🔍 Zoom ao clicar
-    const images = document.querySelectorAll("#carouselImovel img");
-    images.forEach(img => {
-        img.addEventListener("click", () => {
-            img.classList.toggle("zoomed");
-        });
-    });
 });
 </script>
 
-<!-- 🎨 Estilos adicionais -->
+<!-- 🎨 Estilo do contador -->
 <style>
-/* 📸 Contador */
 .carousel-counter {
     position: absolute;
     bottom: 10px;
@@ -108,24 +99,9 @@ document.addEventListener("DOMContentLoaded", function() {
     font-size: 14px;
     font-weight: 500;
 }
-
-/* 🔍 Zoom suave */
-#carouselImovel img {
-    cursor: zoom-in;
-    transition: transform 0.3s ease;
-}
-
-/* Estado ampliado */
-#carouselImovel img.zoomed {
-    transform: scale(1.8);
-    cursor: zoom-out;
-    z-index: 1000;
-    position: relative;
-}
 </style>
 
 {% endblock %}
-
 
 
 
