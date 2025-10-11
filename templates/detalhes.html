@@ -77,11 +77,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const carousel = document.querySelector('#carouselImovel');
     const counter = document.querySelector('#photo-counter');
     const total = counter.dataset.total;
+    let currentIndex = 0;
 
     // ✅ Atualiza contador
     if (carousel && counter) {
         carousel.addEventListener('slid.bs.carousel', function (event) {
             const index = event.to + 1;
+            currentIndex = event.to;
             counter.textContent = `${index} de ${total}`;
         });
     }
@@ -114,7 +116,6 @@ document.addEventListener("DOMContentLoaded", function() {
     lightbox.appendChild(caption);
 
     const images = document.querySelectorAll(".open-lightbox");
-    let currentIndex = 0;
 
     function openLightbox(index) {
         currentIndex = index;
@@ -128,19 +129,28 @@ document.addEventListener("DOMContentLoaded", function() {
         img.addEventListener("click", () => openLightbox(index));
     });
 
-    btnClose.addEventListener("click", () => lightbox.classList.remove("active"));
+    function closeLightbox() {
+        lightbox.classList.remove("active");
+        // 🔄 Ao fechar, atualiza o carrossel para a foto atual do zoom
+        const bsCarousel = bootstrap.Carousel.getInstance(carousel);
+        bsCarousel.to(currentIndex);
+    }
+
+    btnClose.addEventListener("click", closeLightbox);
     lightbox.addEventListener("click", (e) => {
-        if (e.target === lightbox) lightbox.classList.remove("active");
+        if (e.target === lightbox) closeLightbox();
     });
 
     btnPrev.addEventListener("click", (e) => {
         e.stopPropagation();
-        openLightbox((currentIndex - 1 + images.length) % images.length);
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        openLightbox(currentIndex);
     });
 
     btnNext.addEventListener("click", (e) => {
         e.stopPropagation();
-        openLightbox((currentIndex + 1) % images.length);
+        currentIndex = (currentIndex + 1) % images.length;
+        openLightbox(currentIndex);
     });
 
     // 🔍 Zoom + Pan + Cursor de mão
@@ -170,11 +180,11 @@ document.addEventListener("DOMContentLoaded", function() {
         applyTransform();
     });
 
-    // Pan via mouse com mão aberta/fechada
+    // Pan via mouse
     lightboxImg.addEventListener("mousedown", e => {
         e.preventDefault();
         isDragging = true;
-        lightboxImg.classList.add("dragging"); // muda o cursor
+        lightboxImg.classList.add("dragging");
         startX = e.clientX - posX;
         startY = e.clientY - posY;
     });
@@ -258,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function() {
     touch-action: none;
 }
 #lightbox img.dragging {
-    cursor: grabbing; /* 🖐️ mão fechada durante arrasto */
+    cursor: grabbing;
 }
 
 /* Botões */
@@ -302,6 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 {% endblock %}
+
 
 
 
