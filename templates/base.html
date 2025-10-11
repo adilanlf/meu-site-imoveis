@@ -107,8 +107,21 @@
         });
     </script>
 
+    <!-- 🔧 Registro do Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker
+                    .register("/static/js/service-worker.js")
+                    .then(() => console.log("✅ Service Worker registrado com sucesso!"))
+                    .catch((err) => console.log("❌ Erro ao registrar o Service Worker:", err));
+            });
+        }
+    </script>
+
 </body>
 </html>
+
 
 
 

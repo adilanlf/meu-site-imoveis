@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sem conexão - Celo Imóveis</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0d6efd, #6610f2);
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    img {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    button {
+      margin-top: 25px;
+      background: white;
+      color: #0d6efd;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Celo Imóveis">
+  <h1>Você está sem conexão 📴</h1>
+  <p>Mas não se preocupe! Assim que sua internet voltar, o site recarrega automaticamente.</p>
+  <button onclick="window.location.reload()">🔄 Tentar novamente</button>
+</body>
+</html>
