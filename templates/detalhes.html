@@ -8,7 +8,8 @@
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
 
-            <div class="col-md-7">
+            <!-- 🖼️ Carrossel de Imagens -->
+            <div class="col-md-7 position-relative">
                 <div id="carouselImovel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         {% for foto in fotos %}
@@ -21,15 +22,25 @@
                         </div>
                         {% endfor %}
                     </div>
+
+                    <!-- ✅ Controles -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselImovel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselImovel" data-bs-slide="next">
                         <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
                     </button>
+
+                    <!-- 📸 Indicador de foto atual -->
+                    <div id="photo-counter" 
+                         class="carousel-counter" 
+                         data-total="{{ fotos|length }}">
+                        1 de {{ fotos|length }}
+                    </div>
                 </div>
             </div>
 
+            <!-- 🏡 Detalhes do imóvel -->
             <div class="col-md-5 d-flex align-items-center">
                 <div class="card-body p-4">
                     <h2 class="fw-bold">{{ imovel['titulo'] }}</h2>
@@ -54,10 +65,44 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+<!-- 🔧 Script para atualizar contador do carrossel -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const carousel = document.querySelector('#carouselImovel');
+    const counter = document.querySelector('#photo-counter');
+    const total = counter.dataset.total; // ✅ lê o total direto do atributo
+
+    if (carousel && counter) {
+        carousel.addEventListener('slid.bs.carousel', function (event) {
+            const index = event.to + 1;
+            counter.textContent = `${index} / ${total}`;
+        });
+    }
+});
+</script>
+
+<!-- 🎨 Estilo do contador -->
+<style>
+.carousel-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+</style>
+
 {% endblock %}
+
 
 
 
