@@ -15,9 +15,15 @@
                         {% for foto in fotos %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
                             {% if foto.startswith('http') %}
-                                <img src="{{ foto }}" class="d-block w-100" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
+                                <img src="{{ foto }}" 
+                                     class="d-block w-100 open-lightbox" 
+                                     style="max-height: 600px; object-fit: contain; cursor: zoom-in;" 
+                                     alt="Foto do imóvel">
                             {% else %}
-                                <img src="{{ url_for('static', filename='uploads/' + foto) }}" class="d-block w-100" style="max-height: 600px; object-fit: contain;" alt="Foto do imóvel">
+                                <img src="{{ url_for('static', filename='uploads/' + foto) }}" 
+                                     class="d-block w-100 open-lightbox" 
+                                     style="max-height: 600px; object-fit: contain; cursor: zoom-in;" 
+                                     alt="Foto do imóvel">
                             {% endif %}
                         </div>
                         {% endfor %}
@@ -31,7 +37,7 @@
                         <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
                     </button>
 
-                    <!-- 📸 Indicador de foto atual -->
+                    <!-- 📸 Indicador -->
                     <div id="photo-counter" 
                          class="carousel-counter" 
                          data-total="{{ fotos|length }}">
@@ -40,7 +46,7 @@
                 </div>
             </div>
 
-            <!-- 🏡 Detalhes do imóvel -->
+            <!-- 🏡 Detalhes -->
             <div class="col-md-5 d-flex align-items-center">
                 <div class="card-body p-4">
                     <h2 class="fw-bold">{{ imovel['titulo'] }}</h2>
@@ -70,23 +76,44 @@
     </div>
 </div>
 
-<!-- 🔧 Script para atualizar contador do carrossel -->
+<!-- 🔧 Script do contador e lightbox -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const carousel = document.querySelector('#carouselImovel');
     const counter = document.querySelector('#photo-counter');
-    const total = counter.dataset.total; // ✅ lê o total direto do atributo
+    const total = counter.dataset.total;
 
     if (carousel && counter) {
         carousel.addEventListener('slid.bs.carousel', function (event) {
             const index = event.to + 1;
-            counter.textContent = `${index} / ${total}`;
+            counter.textContent = `${index} de ${total}`;
         });
     }
+
+    // 🖼️ Lightbox simples
+    const lightbox = document.createElement("div");
+    lightbox.id = "lightbox";
+    document.body.appendChild(lightbox);
+
+    const images = document.querySelectorAll(".open-lightbox");
+    images.forEach(img => {
+        img.addEventListener("click", () => {
+            lightbox.classList.add("active");
+            const imgFull = document.createElement("img");
+            imgFull.src = img.src;
+            lightbox.innerHTML = ""; // limpa o conteúdo anterior
+            lightbox.appendChild(imgFull);
+        });
+    });
+
+    lightbox.addEventListener("click", (e) => {
+        if (e.target !== e.currentTarget) return;
+        lightbox.classList.remove("active");
+    });
 });
 </script>
 
-<!-- 🎨 Estilo do contador -->
+<!-- 🎨 Estilo do contador + lightbox -->
 <style>
 .carousel-counter {
     position: absolute;
@@ -99,9 +126,42 @@ document.addEventListener("DOMContentLoaded", function() {
     font-size: 14px;
     font-weight: 500;
 }
+
+/* 🖼️ Lightbox */
+#lightbox {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox.active {
+    display: flex;
+}
+
+#lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    object-fit: contain;
+    cursor: zoom-out;
+    transition: transform 0.3s;
+}
+
+/* Permite zoom por gesto (pinch) */
+#lightbox img {
+    touch-action: pinch-zoom;
+}
 </style>
 
 {% endblock %}
+
 
 
 
