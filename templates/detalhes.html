@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 🖼️ Lightbox com pan e zoom
+    // 🖼️ Lightbox com zoom e pan
     const lightbox = document.createElement("div");
     lightbox.id = "lightbox";
     document.body.appendChild(lightbox);
@@ -134,15 +134,20 @@ document.addEventListener("DOMContentLoaded", function() {
         openLightbox((currentIndex + 1) % images.length);
     });
 
-    // 🔍 Zoom + Pan total
+    // 🔍 Zoom + Pan
     let scale = 1, lastScale = 1;
     let posX = 0, posY = 0, lastX = 0, lastY = 0;
     let isDragging = false;
     let startX, startY;
+    let lastTap = 0;
 
     function resetTransform() {
         scale = 1; posX = posY = lastX = lastY = 0;
         lightboxImg.style.transform = `translate(0, 0) scale(1)`;
+    }
+
+    function applyTransform() {
+        lightboxImg.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     }
 
     // Zoom via scroll (PC)
@@ -169,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
         applyTransform();
     });
 
-    // Toque: pinch + arrastar (MOBILE)
+    // Toque: pinch + pan (celular)
     let touchStartDist = 0;
     lightboxImg.addEventListener("touchstart", e => {
         if (e.touches.length === 2) {
@@ -181,6 +186,15 @@ document.addEventListener("DOMContentLoaded", function() {
             startX = e.touches[0].clientX - posX;
             startY = e.touches[0].clientY - posY;
         }
+
+        // Duplo toque para zoom rápido
+        const now = new Date().getTime();
+        const timeSince = now - lastTap;
+        if (timeSince < 300 && timeSince > 0) {
+            scale = scale > 1 ? 1 : 2.5;
+            applyTransform();
+        }
+        lastTap = now;
     }, { passive: false });
 
     lightboxImg.addEventListener("touchmove", e => {
@@ -196,10 +210,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         applyTransform();
     }, { passive: false });
-
-    function applyTransform() {
-        lightboxImg.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-    }
 });
 </script>
 
@@ -271,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 {% endblock %}
+
 
 
 
